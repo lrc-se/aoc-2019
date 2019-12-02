@@ -12,3 +12,11 @@ Day 1
 __JavaScript (Node)__
 
 Quick-and-dirty dependency-less stuff, with equally quicky-and-dirty tests (of sorts).
+
+
+Day 2
+-----
+
+__Python (3.8)__
+
+Class-based public-member approach, with unit tests.
