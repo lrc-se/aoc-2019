@@ -11,6 +11,10 @@ const DELTAS = [
 ];
 
 
+function load_paths_from_file($filename) {
+  return preg_split('/\r?\n/', trim(file_get_contents($filename)));
+}
+
 function get_coordinates($path) {
   $coords = ['0,0'];
   $x = 0;
