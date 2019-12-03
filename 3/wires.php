@@ -11,8 +11,8 @@ const DELTAS = [
 ];
 
 
-function load_paths_from_file($filename) {
-  return preg_split('/\r?\n/', trim(file_get_contents($filename)));
+function load_wires_from_file($filename) {
+  return array_map(__NAMESPACE__ . '\get_coordinates', preg_split('/\r?\n/', trim(file_get_contents($filename))));
 }
 
 function get_coordinates($path) {
@@ -51,4 +51,22 @@ function get_closest_distance_from_origin(...$coordinates) {
   }, $inter);
   sort($distances);
   return (!empty($distances) ? $distances[0] : -1);
+}
+
+function get_minimum_intersection_steps(...$coordinates) {
+  $intersections = get_intersections(...$coordinates);
+  $min_steps = -1;
+  foreach($intersections as $inter) {
+    $sum = 0;
+    foreach($coordinates as $coords) {
+      $steps = array_search($inter, $coords);
+      if($steps !== false) {
+        $sum += $steps;
+      }
+    }
+    if($min_steps === -1 || $sum < $min_steps) {
+      $min_steps = $sum;
+    }
+  }
+  return $min_steps;
 }
