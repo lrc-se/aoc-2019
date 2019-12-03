@@ -11,7 +11,7 @@ Day 1
 
 __JavaScript (Node)__
 
-Quick-and-dirty dependency-less stuff, with equally quicky-and-dirty tests (of sorts).
+Quick-and-dirty dependency-less stuff, with equally quick-and-dirty tests (of sorts).
 
 
 Day 2
@@ -20,3 +20,11 @@ Day 2
 __Python (3.8)__
 
 Class-based public-member approach, with unit tests.
+
+
+Day 3
+-----
+
+__PHP (7.3)__
+
+Using various built-in array functions.
