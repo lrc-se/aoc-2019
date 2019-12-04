@@ -111,5 +111,17 @@ begin
   end;
   WriteLn;
 
+  (* Puzzle 2 *)
+  WriteLn('PUZZLE 2');
+  WriteLn('========');
+  count := 0;
+  for i := rangeStart to rangeEnd do begin
+    Str(i, curPwd);
+    if IsMatch(curPwd, true) then
+      count := count + 1;
+  end;
+  WriteLn('Possible passwords: ', count);
+  WriteLn;
+
   repeat until KeyPressed;
 end.
