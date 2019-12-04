@@ -28,3 +28,11 @@ Day 3
 __PHP (7.3)__
 
 Using various built-in array functions.
+
+
+Day 4
+-----
+
+__Pascal (Turbo Pascal 7)__
+
+A blast from the past! Written and compiled with TPX in dosbox.
