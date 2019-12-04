@@ -4,9 +4,15 @@ program Puzzle;
 
 uses crt;
 
+const
+  rangeStart = 125730;
+  rangeEnd = 579381;
+
 var
   tests: array[1..6] of string;
   i: longint;
+  count: longint;
+  curPwd: string;
 
 function IsMatch(pwd: string): boolean;
 var
@@ -57,6 +63,17 @@ begin
       WriteLn('NO MATCH');
   end;
   WriteLn;
+
+  (* Puzzle 1 *)
+  WriteLn('PUZZLE 1');
+  WriteLn('========');
+  count := 0;
+  for i := rangeStart to rangeEnd do begin
+    Str(i, curPwd);
+    if IsMatch(curPwd) then
+      count := count + 1;
+  end;
+  WriteLn('Possible passwords: ', count);
 
   repeat until KeyPressed;
 end.
