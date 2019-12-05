@@ -13,6 +13,13 @@ namespace AOC2019
       Console.WriteLine("=====");
       RunTests();
       Console.WriteLine();
+
+      var program = System.IO.File.ReadAllText("input.txt").Split(',').Select(i => Convert.ToInt32(i));
+
+      Console.WriteLine("PUZZLE 1");
+      Console.WriteLine("========");
+      var runner = new IntcodeRunner(program);
+      runner.Run();
     }
 
     public static void RunTests()
