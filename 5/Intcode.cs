@@ -13,6 +13,10 @@ namespace AOC2019
       new Operation(2, 3),
       new Operation(3, 1),
       new Operation(4, 1),
+      new Operation(5, 2),
+      new Operation(6, 2),
+      new Operation(7, 3),
+      new Operation(8, 3),
       new Operation(99, 0)
     };
 
@@ -55,6 +59,26 @@ namespace AOC2019
             break;
           case 4:
             Console.WriteLine(GetParameterValue(parameters[0]));
+            break;
+          case 5:
+            if (GetParameterValue(parameters[0]) != 0)
+            {
+              pointer = GetParameterValue(parameters[1]);
+              continue;
+            }
+            break;
+          case 6:
+            if (GetParameterValue(parameters[0]) == 0)
+            {
+              pointer = GetParameterValue(parameters[1]);
+              continue;
+            }
+            break;
+          case 7:
+            Program[parameters[2].Value] = (GetParameterValue(parameters[0]) < GetParameterValue(parameters[1]) ? 1 : 0);
+            break;
+          case 8:
+            Program[parameters[2].Value] = (GetParameterValue(parameters[0]) == GetParameterValue(parameters[1]) ? 1 : 0);
             break;
           case 99:
             return;
