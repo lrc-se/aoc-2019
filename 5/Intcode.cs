@@ -11,6 +11,8 @@ namespace AOC2019
     {
       new Operation(1, 3),
       new Operation(2, 3),
+      new Operation(3, 1),
+      new Operation(4, 1),
       new Operation(99, 0)
     };
 
@@ -46,6 +48,13 @@ namespace AOC2019
             break;
           case 2:
             Program[parameters[2].Value] = GetParameterValue(parameters[0]) * GetParameterValue(parameters[1]);
+            break;
+          case 3:
+            Console.Write("Input: ");
+            Program[parameters[0].Value] = Convert.ToInt32(Console.ReadLine());
+            break;
+          case 4:
+            Console.WriteLine(GetParameterValue(parameters[0]));
             break;
           case 99:
             return;
