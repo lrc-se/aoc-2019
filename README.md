@@ -36,3 +36,11 @@ Day 4
 __Pascal (Turbo Pascal 7)__
 
 A blast from the past! Written and compiled with TPX in dosbox.
+
+
+Day 5
+-----
+
+__C# (.NET 4.7)__
+
+Back to the future. Mmm, types.
