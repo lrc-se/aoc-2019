@@ -25,6 +25,12 @@ namespace AOC2019
       Console.WriteLine("EXAMPLES");
       Console.WriteLine("========");
       RunExamples();
+      Console.WriteLine();
+
+      Console.WriteLine("PUZZLE 2");
+      Console.WriteLine("========");
+      runner.Program = program.ToList();
+      runner.Run();
     }
 
     public static void RunTests()
