@@ -40,6 +40,7 @@ namespace AOC2019
         {
           throw new Exception("Unsupported opcode " + instruction.Opcode + " at position " + pointer);
         }
+
         var parameters = Program.Skip(pointer + 1).Take(operation.ParameterCount).Select((p, i) => new Parameter(
           Program[pointer + i + 1],
           instruction.ParameterModes.ElementAtOrDefault(i)
@@ -50,16 +51,20 @@ namespace AOC2019
           case 1:
             Program[parameters[2].Value] = GetParameterValue(parameters[0]) + GetParameterValue(parameters[1]);
             break;
+
           case 2:
             Program[parameters[2].Value] = GetParameterValue(parameters[0]) * GetParameterValue(parameters[1]);
             break;
+
           case 3:
             Console.Write("Input: ");
             Program[parameters[0].Value] = Convert.ToInt32(Console.ReadLine());
             break;
+
           case 4:
             Console.WriteLine(GetParameterValue(parameters[0]));
             break;
+
           case 5:
             if (GetParameterValue(parameters[0]) != 0)
             {
@@ -67,6 +72,7 @@ namespace AOC2019
               continue;
             }
             break;
+
           case 6:
             if (GetParameterValue(parameters[0]) == 0)
             {
@@ -74,20 +80,24 @@ namespace AOC2019
               continue;
             }
             break;
+
           case 7:
             Program[parameters[2].Value] = (GetParameterValue(parameters[0]) < GetParameterValue(parameters[1]) ? 1 : 0);
             break;
+
           case 8:
             Program[parameters[2].Value] = (GetParameterValue(parameters[0]) == GetParameterValue(parameters[1]) ? 1 : 0);
             break;
+
           case 99:
             return;
         }
+
         pointer += operation.ParameterCount + 1;
       }
     }
 
-    
+
     private int GetParameterValue(Parameter parameter)
     {
       return (parameter.Mode == ParameterMode.Position ? Program[parameter.Value] : parameter.Value);
