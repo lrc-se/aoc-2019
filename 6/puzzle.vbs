@@ -6,6 +6,10 @@ Dim dicOrbits
 Set dicOrbits = LoadOrbits("example1.txt")
 MsgBox "Number of orbits equals 42: " & (CountAllOrbits(dicOrbits) = 42), , "Example 1"
 
+' puzzle 1
+Set dicOrbits = LoadOrbits("input.txt")
+MsgBox "Number of orbits: " & CountAllOrbits(dicOrbits), , "Puzzle 1"
+
 Set dicOrbits = Nothing
 
 
