@@ -1,21 +1,24 @@
 Option Explicit
 
-Dim dicOrbits
+Dim dicInput : Set dicInput = LoadOrbits("input.txt")
 
 ' example 1
-Set dicOrbits = LoadOrbits("example1.txt")
-MsgBox "Number of orbits equals 42: " & (CountAllOrbits(dicOrbits) = 42), , "Example 1"
+Dim dicExample : Set dicExample = LoadOrbits("example1.txt")
+MsgBox "Number of orbits equals 42: " & (CountAllOrbits(dicExample) = 42), , "Example 1"
 
 ' puzzle 1
-Set dicOrbits = LoadOrbits("input.txt")
-MsgBox "Number of orbits: " & CountAllOrbits(dicOrbits), , "Puzzle 1"
+MsgBox "Number of orbits: " & CountAllOrbits(dicInput), , "Puzzle 1"
 
 ' example 2
-Set dicOrbits = LoadOrbits("example2.txt")
-MsgBox "Number of transfers equals 4: " & (CountOrbitalTransfers(dicOrbits, "YOU", "SAN") = 4), , "Example 2"
-MsgBox "Number of transfers equals 6: " & (CountOrbitalTransfers(dicOrbits, "L", "H") = 6), , "Example 2 (extra test)"
+Set dicExample = LoadOrbits("example2.txt")
+MsgBox "Number of transfers equals 4: " & (CountOrbitalTransfers(dicExample, "YOU", "SAN") = 4), , "Example 2"
+MsgBox "Number of transfers equals 6: " & (CountOrbitalTransfers(dicExample, "L", "H") = 6), , "Example 2 (extra test)"
 
-Set dicOrbits = Nothing
+' puzzle 2
+MsgBox "Number of transfers: " & CountOrbitalTransfers(dicInput, "YOU", "SAN"), , "Puzzle 2"
+
+Set dicInput = Nothing
+Set dicExample = Nothing
 
 
 ' functions
