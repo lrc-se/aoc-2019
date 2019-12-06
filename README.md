@@ -44,3 +44,11 @@ Day 5
 __C# (.NET 4.7)__
 
 Back to the future. Mmm, types.
+
+
+Day 6
+-----
+
+__VBScript (Windows Scripting Host)__
+
+Without .NET framework dependencies. To run as classic ASP, use `Server.MapPath` for file access and replace the `MsgBox` calls with `Response.Write` (and some line breaks).
