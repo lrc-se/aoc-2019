@@ -2,6 +2,7 @@ Imports System
 Imports System.Linq
 Imports System.Collections
 Imports System.Collections.Generic
+Imports System.Threading
 
 Namespace AOC2019
   Public Class IntcodeRunner
@@ -19,6 +20,7 @@ Namespace AOC2019
 
     Private InputQueue As Queue(Of Integer) = New Queue(Of Integer)
     Private OutputList As IList(Of Integer) = New List(Of Integer)
+    Private InputAvailable As New ManualResetEvent(False)
 
     Public Property Program As IList(Of Integer)
     Public Property InputMode As IOMode
@@ -40,6 +42,9 @@ Namespace AOC2019
         Return If(OutputMode = IOMode.Internal, OutputList.AsEnumerable, Nothing)
       End Get
     End Property
+
+    Public Event OnOutput(value As Integer)
+    Public Event OnHalt
 
 
     Public Sub New(Optional program As IEnumerable(Of Integer) = Nothing, Optional inputMode As IOMode = IOMode.External, Optional outputMode As IOMode = IOMode.External)
@@ -72,24 +77,34 @@ Namespace AOC2019
 
           Case 3
             Dim value As Integer
-            If InputMode = IOMode.External Then
-              Console.Write("Input: ")
-              value = Convert.ToInt32(Console.ReadLine)
-            Else
+            If InputMode = IOMode.Internal Then
               If InputQueue.Any Then
                 value = InputQueue.Dequeue()
               Else
                 Throw New Exception("Empty input queue for input operation at position " & pointer)
               End If
+            ElseIf InputMode = IOMode.Event Then
+              If Not InputQueue.Any Then
+                InputAvailable.WaitOne
+              End If
+              value = InputQueue.Dequeue()
+              If Not InputQueue.Any Then
+                InputAvailable.Reset
+              End If
+            Else
+              Console.Write("Input: ")
+              value = Convert.ToInt32(Console.ReadLine)
             End If
             Program(parameters(0).Value) = value
 
           Case 4
             Dim value As Integer = GetParameterValue(parameters(0))
-            If OutputMode = IOMode.External Then
-              Console.WriteLine(value)
-            Else
+            If OutputMode = IOMode.Internal Then
               OutputList.Add(value)
+            ElseIf OutputMode = IOMode.Event Then
+              RaiseEvent OnOutput(value)
+            Else
+              Console.WriteLine(value)
             End If
 
           Case 5
@@ -110,12 +125,28 @@ Namespace AOC2019
           Case 8
             Program(parameters(2).Value) = If(GetParameterValue(parameters(0)) = GetParameterValue(parameters(1)), 1, 0)
 
-          case 99
-            Return
+          Case 99
+            Exit Do
         End Select
 
         pointer = pointer + operation.ParameterCount + 1
       Loop
+
+      RaiseEvent OnHalt
+    End Sub
+
+    Public Sub RunAsync()
+      Dim runThread = New Thread(AddressOf Run)
+      runThread.Start
+    End Sub
+
+    Public Sub ReceiveInput(value As Integer)
+      If InputMode = IOMode.Event Then
+        InputQueue.Enqueue(value)
+        InputAvailable.Set
+      Else
+        Throw New Exception("Cannot receive input when not in event input mode")
+      End If
     End Sub
 
     Public Sub ClearOutput()
@@ -175,5 +206,6 @@ Namespace AOC2019
   Public Enum IOMode
     External = 0
     Internal = 1
+    [Event] = 2
   End Enum
 End Namespace
