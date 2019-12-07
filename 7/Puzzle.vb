@@ -29,6 +29,20 @@ Namespace AOC2019
       Console.WriteLine("COMBINATORICS TESTS")
       Console.WriteLine("===================")
       RunCombinatoricsTests
+      Console.WriteLine
+
+      Dim program = System.IO.File.ReadAllText("input.txt").Split(",").Select(Function(i) Convert.ToInt32(i))
+
+      Console.WriteLine("PUZZLE 1")
+      Console.WriteLine("========")
+      Dim maxSignal As Long = 0
+      For Each phaseSettings In Combinatorics.GetPermutations({ 0, 1, 2, 3, 4 })
+        Dim signal = RunAmplifiers(program, phaseSettings)
+        If signal > maxSignal Then
+          maxSignal = signal
+        End If
+      Next
+      Console.WriteLine("Maximum output signal: " & maxSignal)
     End Sub
 
     Public Shared Function RunAmplifiers(program As IEnumerable(Of Integer), phaseSettings As IEnumerable(Of Integer), Optional inputSignal As Long = 0)
