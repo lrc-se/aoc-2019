@@ -6,15 +6,15 @@ Imports System.Collections.Generic
 Namespace AOC2019
   Public Class Puzzle
     Public Shared Sub Main()
-      Console.WriteLine("OLD TESTS")
-      Console.WriteLine("=========")
-      RunOldTests
-      Console.WriteLine
+      ' Console.WriteLine("OLD TESTS")
+      ' Console.WriteLine("=========")
+      ' RunOldTests
+      ' Console.WriteLine
 
-      Console.WriteLine("OLD EXAMPLES")
-      Console.WriteLine("============")
-      RunOldExamples
-      Console.WriteLine
+      ' Console.WriteLine("OLD EXAMPLES")
+      ' Console.WriteLine("============")
+      ' RunOldExamples
+      ' Console.WriteLine
 
       Console.WriteLine("NEW TESTS")
       Console.WriteLine("=========")
@@ -24,6 +24,11 @@ Namespace AOC2019
       Console.WriteLine("NEW EXAMPLES")
       Console.WriteLine("============")
       RunNewExamples
+      Console.WriteLine
+
+      Console.WriteLine("COMBINATORICS TESTS")
+      Console.WriteLine("===================")
+      RunCombinatoricsTests
     End Sub
 
     Public Shared Function RunAmplifiers(program As IEnumerable(Of Integer), phaseSettings As IEnumerable(Of Integer), Optional inputSignal As Long = 0)
@@ -92,6 +97,23 @@ Namespace AOC2019
         { 1, 0, 4, 3, 2 }
       )
       Console.WriteLine("Phase settings 10432 result in max signal 65210: " & (signal = 65210))
+    End Sub
+
+    Public Shared Sub RunCombinatoricsTests()
+      Dim sequences As New List(Of IEnumerable(Of Integer))
+      sequences.Add({ 1, 2, 3 })
+      sequences.Add({ 1, 2, 2 })
+      sequences.Add({ 4, 3, 2, 1 })
+
+      For Each sequence In sequences
+        Console.Write("Permutations of " & String.Join("", sequence))
+        Dim permutations = Combinatorics.GetPermutations(sequence)
+        Console.Write(" (" & permutations.Count & "):")
+        For Each permutation In permutations
+          Console.Write(" " & String.Join("", permutation))
+        Next
+        Console.WriteLine
+      Next
     End Sub
 
     Public Shared Sub RunOldExamples()
