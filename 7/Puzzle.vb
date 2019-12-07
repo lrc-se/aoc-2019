@@ -7,15 +7,15 @@ Imports System.Threading
 Namespace AOC2019
   Public Class Puzzle
     Public Shared Sub Main()
-      Console.WriteLine("OLD TESTS")
-      Console.WriteLine("=========")
-      RunOldTests
-      Console.WriteLine
+      ' Console.WriteLine("OLD TESTS")
+      ' Console.WriteLine("=========")
+      ' RunOldTests
+      ' Console.WriteLine
 
-      Console.WriteLine("OLD EXAMPLES")
-      Console.WriteLine("============")
-      RunOldExamples
-      Console.WriteLine
+      ' Console.WriteLine("OLD EXAMPLES")
+      ' Console.WriteLine("============")
+      ' RunOldExamples
+      ' Console.WriteLine
 
       Console.WriteLine("NEW TESTS 1")
       Console.WriteLine("===========")
@@ -36,7 +36,7 @@ Namespace AOC2019
 
       Console.WriteLine("PUZZLE 1")
       Console.WriteLine("========")
-      Dim maxSignal As Long = 0
+      Dim maxSignal As Integer = 0
       For Each phaseSettings In Combinatorics.GetPermutations({ 0, 1, 2, 3, 4 })
         Dim signal = RunAmplifiers(program, phaseSettings)
         If signal > maxSignal Then
@@ -50,6 +50,17 @@ Namespace AOC2019
       Console.WriteLine("===========")
       RunNewTests2
       Console.WriteLine
+
+      Console.WriteLine("PUZZLE 2")
+      Console.WriteLine("========")
+      maxSignal = 0
+      For Each phaseSettings In Combinatorics.GetPermutations({ 5, 6, 7, 8, 9 })
+        Dim signal = RunAmplifiersAsync(program, phaseSettings)
+        If signal > maxSignal Then
+          maxSignal = signal
+        End If
+      Next
+      Console.WriteLine("Maximum output signal: " & maxSignal)
     End Sub
 
     Public Shared Function RunAmplifiers(program As IEnumerable(Of Integer), phaseSettings As IEnumerable(Of Integer), Optional inputSignal As Integer = 0) As Integer
@@ -75,7 +86,6 @@ Namespace AOC2019
         amplifier.ReceiveInput(phaseSetting)
         amplifiers.Add(amplifier)
       Next
-      amplifiers(0).ReceiveInput(inputSignal)
 
       ' chain and start amplifiers
       For i = 0 To amplifiers.Count - 2
@@ -91,7 +101,8 @@ Namespace AOC2019
       End Sub
       amplifiers.Last.RunAsync
 
-      ' wait for loop to finish
+      ' execute loop
+      amplifiers(0).ReceiveInput(inputSignal)
       completed.WaitOne
       Return signal
     End Function
