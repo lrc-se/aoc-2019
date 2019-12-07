@@ -16,43 +16,82 @@ Namespace AOC2019
       RunOldExamples
       Console.WriteLine
 
+      Console.WriteLine("NEW TESTS")
+      Console.WriteLine("=========")
+      RunNewTests
+      Console.WriteLine
+
       Console.WriteLine("NEW EXAMPLES")
       Console.WriteLine("============")
       RunNewExamples
     End Sub
 
+    Public Shared Function RunAmplifiers(program As IEnumerable(Of Integer), phaseSettings As IEnumerable(Of Integer), Optional inputSignal As Long = 0)
+      Dim signal As Long = inputSignal
+      For Each phaseSetting In phaseSettings
+        Dim runner = New IntcodeRunner(program, IOMode.Internal, IOMode.Internal)
+        runner.Input.Enqueue(phaseSetting)
+        runner.Input.Enqueue(signal)
+        runner.Run
+        signal = runner.Output(0)
+      Next
+      Return signal
+    End Function
+
     Public Shared Sub RunOldTests()
       Dim runner = New IntcodeRunner
 
-      ' old tests
-      runner.Program = new List(Of Integer) From { 1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50 }
+      ' older tests
+      runner.Program = New List(Of Integer) From { 1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50 }
       runner.Run
-      Console.WriteLine("Test 1: " & runner.Program.SequenceEqual(New List(Of Integer) From { 3500, 9, 10, 70, 2, 3, 11, 0, 99, 30, 40, 50 }))
+      Console.WriteLine("Test 1: " & runner.Program.SequenceEqual({ 3500, 9, 10, 70, 2, 3, 11, 0, 99, 30, 40, 50 }))
 
-      runner.Program = new List(Of Integer) From { 1, 0, 0, 0, 99 }
+      runner.Program = New List(Of Integer) From { 1, 0, 0, 0, 99 }
       runner.Run
-      Console.WriteLine("Test 2: " & runner.Program.SequenceEqual(New List(Of Integer) From { 2, 0, 0, 0, 99 }))
+      Console.WriteLine("Test 2: " & runner.Program.SequenceEqual({ 2, 0, 0, 0, 99 }))
 
-      runner.Program = new List(Of Integer) From { 2, 3, 0, 3, 99 }
+      runner.Program = New List(Of Integer) From { 2, 3, 0, 3, 99 }
       runner.Run
-      Console.WriteLine("Test 3: " & runner.Program.SequenceEqual(New List(Of Integer) From { 2, 3, 0, 6, 99 }))
+      Console.WriteLine("Test 3: " & runner.Program.SequenceEqual({ 2, 3, 0, 6, 99 }))
 
-      runner.Program = new List(Of Integer) From { 2, 4, 4, 5, 99, 0 }
+      runner.Program = New List(Of Integer) From { 2, 4, 4, 5, 99, 0 }
       runner.Run
-      Console.WriteLine("Test 4: " & runner.Program.SequenceEqual(New List(Of Integer) From { 2, 4, 4, 5, 99, 9801 }))
+      Console.WriteLine("Test 4: " & runner.Program.SequenceEqual({ 2, 4, 4, 5, 99, 9801 }))
 
-      runner.Program = new List(Of Integer) From { 1, 1, 1, 4, 99, 5, 6, 0, 99 }
+      runner.Program = New List(Of Integer) From { 1, 1, 1, 4, 99, 5, 6, 0, 99 }
       runner.Run
-      Console.WriteLine("Test 5: " & runner.Program.SequenceEqual(New List(Of Integer) From { 30, 1, 1, 4, 2, 5, 6, 0, 99 }))
+      Console.WriteLine("Test 5: " & runner.Program.SequenceEqual({ 30, 1, 1, 4, 2, 5, 6, 0, 99 }))
 
-      ' new tests
-      runner.Program = new List(Of Integer) From { 1002, 4, 3, 4, 33 }
+      ' newer tests
+      runner.Program = New List(Of Integer) From { 1002, 4, 3, 4, 33 }
       runner.Run
-      Console.WriteLine("Test 6: " & runner.Program.SequenceEqual(New List(Of Integer) From { 1002, 4, 3, 4, 99 }))
+      Console.WriteLine("Test 6: " & runner.Program.SequenceEqual({ 1002, 4, 3, 4, 99 }))
 
-      runner.Program = new List(Of Integer) From { 1101, 100, -1, 4, 0 }
+      runner.Program = New List(Of Integer) From { 1101, 100, -1, 4, 0 }
       runner.Run
-      Console.WriteLine("Test 7: " & runner.Program.SequenceEqual(New List(Of Integer) From { 1101, 100, -1, 4, 99 }))
+      Console.WriteLine("Test 7: " & runner.Program.SequenceEqual({ 1101, 100, -1, 4, 99 }))
+    End Sub
+
+    Public Shared Sub RunNewTests()
+      Dim signal As Integer
+      
+      signal = RunAmplifiers(
+        { 3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0 },
+        { 4, 3, 2, 1, 0 }
+      )
+      Console.WriteLine("Phase settings 43210 result in max signal 43210: " & (signal = 43210))
+
+      signal = RunAmplifiers(
+        { 3, 23, 3, 24, 1002, 24, 10, 24, 1002, 23, -1, 23, 101, 5, 23, 23, 1, 24, 23, 23, 4, 23, 99, 0, 0 },
+        { 0, 1, 2, 3, 4 }
+      )
+      Console.WriteLine("Phase settings 01234 result in max signal 54321: " & (signal = 54321))
+
+      signal = RunAmplifiers(
+        { 3, 31, 3, 32, 1002, 32, 10, 32, 1001, 31, -2, 31, 1007, 31, 0, 33, 1002, 33, 7, 33, 1, 33, 31, 31, 1, 32, 31, 31, 4, 31, 99, 0, 0, 0 },
+        { 1, 0, 4, 3, 2 }
+      )
+      Console.WriteLine("Phase settings 10432 result in max signal 65210: " & (signal = 65210))
     End Sub
 
     Public Shared Sub RunOldExamples()
