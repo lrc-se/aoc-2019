@@ -2,23 +2,24 @@ Imports System
 Imports System.Linq
 Imports System.Collections
 Imports System.Collections.Generic
+Imports System.Threading
 
 Namespace AOC2019
   Public Class Puzzle
     Public Shared Sub Main()
-      ' Console.WriteLine("OLD TESTS")
-      ' Console.WriteLine("=========")
-      ' RunOldTests
-      ' Console.WriteLine
-
-      ' Console.WriteLine("OLD EXAMPLES")
-      ' Console.WriteLine("============")
-      ' RunOldExamples
-      ' Console.WriteLine
-
-      Console.WriteLine("NEW TESTS")
+      Console.WriteLine("OLD TESTS")
       Console.WriteLine("=========")
-      RunNewTests
+      RunOldTests
+      Console.WriteLine
+
+      Console.WriteLine("OLD EXAMPLES")
+      Console.WriteLine("============")
+      RunOldExamples
+      Console.WriteLine
+
+      Console.WriteLine("NEW TESTS 1")
+      Console.WriteLine("===========")
+      RunNewTests1
       Console.WriteLine
 
       Console.WriteLine("NEW EXAMPLES")
@@ -43,10 +44,16 @@ Namespace AOC2019
         End If
       Next
       Console.WriteLine("Maximum output signal: " & maxSignal)
+      Console.WriteLine
+
+      Console.WriteLine("NEW TESTS 2")
+      Console.WriteLine("===========")
+      RunNewTests2
+      Console.WriteLine
     End Sub
 
-    Public Shared Function RunAmplifiers(program As IEnumerable(Of Integer), phaseSettings As IEnumerable(Of Integer), Optional inputSignal As Long = 0)
-      Dim signal As Long = inputSignal
+    Public Shared Function RunAmplifiers(program As IEnumerable(Of Integer), phaseSettings As IEnumerable(Of Integer), Optional inputSignal As Integer = 0) As Integer
+      Dim signal As Integer = inputSignal
       For Each phaseSetting In phaseSettings
         Dim runner = New IntcodeRunner(program, IOMode.Internal, IOMode.Internal)
         runner.Input.Enqueue(phaseSetting)
@@ -54,6 +61,38 @@ Namespace AOC2019
         runner.Run
         signal = runner.Output(0)
       Next
+      Return signal
+    End Function
+
+    Public Shared Function RunAmplifiersAsync(program As IEnumerable(Of Integer), phaseSettings As IEnumerable(Of Integer), Optional inputSignal As Integer = 0) As Integer
+      Dim signal As Integer = inputSignal
+      Dim completed = New ManualResetEvent(False)
+
+      ' set up initial states of amplifiers
+      Dim amplifiers = New List(Of IntcodeRunner)
+      For Each phaseSetting In phaseSettings
+        Dim amplifier = New IntcodeRunner(program, IOMode.Event, IOMode.Event)
+        amplifier.ReceiveInput(phaseSetting)
+        amplifiers.Add(amplifier)
+      Next
+      amplifiers(0).ReceiveInput(inputSignal)
+
+      ' chain and start amplifiers
+      For i = 0 To amplifiers.Count - 2
+        AddHandler amplifiers(i).OnOutput, AddressOf amplifiers(i + 1).ReceiveInput
+        amplifiers(i).RunAsync
+      Next
+      AddHandler amplifiers.Last.OnOutput, Sub(value)
+        amplifiers(0).ReceiveInput(value)
+        signal = value
+      End Sub
+      AddHandler amplifiers.Last.OnHalt, Sub()
+        completed.Set
+      End Sub
+      amplifiers.Last.RunAsync
+
+      ' wait for loop to finish
+      completed.WaitOne
       Return signal
     End Function
 
@@ -91,7 +130,7 @@ Namespace AOC2019
       Console.WriteLine("Test 7: " & runner.Program.SequenceEqual({ 1101, 100, -1, 4, 99 }))
     End Sub
 
-    Public Shared Sub RunNewTests()
+    Public Shared Sub RunNewTests1()
       Dim signal As Integer
       
       signal = RunAmplifiers(
@@ -111,6 +150,26 @@ Namespace AOC2019
         { 1, 0, 4, 3, 2 }
       )
       Console.WriteLine("Phase settings 10432 result in max signal 65210: " & (signal = 65210))
+    End Sub
+
+    Public Shared Sub RunNewTests2()
+      Dim signal As Integer
+      
+      signal = RunAmplifiersAsync(
+        { 3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1, 27, 26, 27, 4, 27, 1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5 },
+        { 9, 8, 7, 6, 5 }
+      )
+      Console.WriteLine("Phase settings 98765 result in max signal 139629729: " & (signal = 139629729))
+
+      signal = RunAmplifiersAsync(
+        {
+          3, 52, 1001, 52, -5, 52, 3, 53, 1, 52, 56, 54, 1007, 54, 5, 55, 1005, 55, 26, 1001, 54,
+          -5, 54, 1105, 1, 12, 1, 53, 54, 53, 1008, 54, 0, 55, 1001, 55, 1, 55, 2, 53, 55, 53, 4,
+          53, 1001, 56, -1, 56, 1005, 56, 6, 99, 0, 0, 0, 0, 10
+        },
+        { 9, 7, 8, 5, 6 }
+      )
+      Console.WriteLine("Phase settings 97856 result in max signal 18216: " & (signal = 18216))
     End Sub
 
     Public Shared Sub RunCombinatoricsTests()
