@@ -6,17 +6,22 @@ Imports System.Collections.Generic
 Namespace AOC2019
   Public Class Puzzle
     Public Shared Sub Main()
-      Console.WriteLine("TESTS")
-      Console.WriteLine("=====")
-      RunTests
+      Console.WriteLine("OLD TESTS")
+      Console.WriteLine("=========")
+      RunOldTests
       Console.WriteLine
 
-      Console.WriteLine("EXAMPLES")
-      Console.WriteLine("========")
-      RunExamples
+      Console.WriteLine("OLD EXAMPLES")
+      Console.WriteLine("============")
+      RunOldExamples
+      Console.WriteLine
+
+      Console.WriteLine("NEW EXAMPLES")
+      Console.WriteLine("============")
+      RunNewExamples
     End Sub
 
-    Public Shared Sub RunTests()
+    Public Shared Sub RunOldTests()
       Dim runner = New IntcodeRunner
 
       ' old tests
@@ -50,7 +55,7 @@ Namespace AOC2019
       Console.WriteLine("Test 7: " & runner.Program.SequenceEqual(New List(Of Integer) From { 1101, 100, -1, 4, 99 }))
     End Sub
 
-    Public Shared Sub RunExamples()
+    Public Shared Sub RunOldExamples()
       Dim runner = New IntcodeRunner
 
       Console.WriteLine("Equal to 8?")
@@ -84,6 +89,69 @@ Namespace AOC2019
         999, 1105, 1, 46, 1101, 1000, 1, 20, 4, 20, 1105, 1, 46, 98, 99
       }
       runner.Run
+    End Sub
+
+    Public Shared Sub RunNewExamples()
+      Dim runner = New IntcodeRunner(inputMode:=IOMode.Internal, outputMode:=IOMode.Internal)
+
+      Console.WriteLine("Equal to 8?")
+      runner.Program = New List(Of Integer) From { 3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8 }
+      runner.Input.Enqueue(8)
+      runner.Run
+      Console.WriteLine("Input 8 outputs 1: " & (runner.Output(0) = 1))
+
+      Console.WriteLine("Less than 8?")
+      runner.Program = New List(Of Integer) From { 3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8 }
+      runner.Input = New Queue(Of Integer)({ 7 })
+      runner.Run
+      Console.WriteLine("Input 7 outputs 1: " & (runner.Output(1) = 1))
+
+      Console.WriteLine("Equal to 8?")
+      runner.Program = New List(Of Integer) From { 3, 3, 1108, -1, 8, 3, 4, 3, 99 }
+      runner.Input = New Queue(Of Integer)({ 47 })
+      runner.Run
+      Console.WriteLine("Input 47 outputs 0: " & (runner.Output(2) = 0))
+
+      Console.WriteLine("Less than 8?")
+      runner.Program = New List(Of Integer) From { 3, 3, 1107, -1, 8, 3, 4, 3, 99 }
+      runner.Input = New Queue(Of Integer)({ 12 })
+      runner.Run
+      Console.WriteLine("Input 12 outputs 0: " & (runner.Output(3) = 0))
+
+      Console.WriteLine("Non-zero input?")
+      runner.Program = New List(Of Integer) From { 3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9 }
+      runner.Input = New Queue(Of Integer)({ 0 })
+      runner.Run
+      Console.WriteLine("Input 0 outputs 0: " & (runner.Output(4) = 0))
+
+      Console.WriteLine("Non-zero input?")
+      runner.Program = New List(Of Integer) From { 3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1 }
+      runner.Input = New Queue(Of Integer)({ -1 })
+      runner.Run
+      Console.WriteLine("Input -1 outputs 1: " & (runner.Output(5) = 1))
+
+      Console.WriteLine("Compare to 8")
+      runner.Program = New List(Of Integer) From {
+        3, 21, 1008, 21, 8, 20, 1005, 20, 22, 107, 8, 21, 20, 1006, 20, 31,
+        1106, 0, 36, 98, 0, 0, 1002, 21, 125, 20, 4, 20, 1105, 1, 46, 104,
+        999, 1105, 1, 46, 1101, 1000, 1, 20, 4, 20, 1105, 1, 46, 98, 99
+      }
+      runner.Input = New Queue(Of Integer)({ 0 })
+      runner.ClearOutput
+      runner.Run
+      Console.WriteLine("Input 0 outputs 999: " & (runner.Output(0) = 999))
+
+      Console.WriteLine("Compare to 8")
+      runner.Input = New Queue(Of Integer)({ 8 })
+      runner.ClearOutput
+      runner.Run
+      Console.WriteLine("Input 8 outputs 1000: " & (runner.Output(0) = 1000))
+
+      Console.WriteLine("Compare to 8")
+      runner.Input = New Queue(Of Integer)({ 9 })
+      runner.ClearOutput
+      runner.Run
+      Console.WriteLine("Input 9 outputs 1001: " & (runner.Output(0) = 1001))
     End Sub
   End Class
 End Namespace

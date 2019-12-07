@@ -17,11 +17,35 @@ Namespace AOC2019
       New Operation(99, 0)
     }
 
+    Private InputQueue As Queue(Of Integer) = New Queue(Of Integer)
+    Private OutputList As IList(Of Integer) = New List(Of Integer)
+
     Public Property Program As IList(Of Integer)
+    Public Property InputMode As IOMode
+    Public Property OutputMode As IOMode
+    Public Property Input As Queue(Of Integer)
+      Get
+        Return If(InputMode = IOMode.Internal, InputQueue, Nothing)
+      End Get
+      Set
+        If InputMode = IOMode.Internal Then
+          InputQueue = value
+        Else
+          Throw New Exception("Cannot set input data when not in internal input mode")
+        End If
+      End Set
+    End Property
+    Public ReadOnly Property Output As IEnumerable(Of Integer)
+      Get
+        Return If(OutputMode = IOMode.Internal, OutputList.AsEnumerable, Nothing)
+      End Get
+    End Property
 
 
-    Public Sub New(Optional program As IEnumerable(Of Integer) = Nothing)
-      Program = If(Not program Is Nothing, program.ToList, New List(Of Integer))
+    Public Sub New(Optional program As IEnumerable(Of Integer) = Nothing, Optional inputMode As IOMode = IOMode.External, Optional outputMode As IOMode = IOMode.External)
+      Me.Program = If(Not program Is Nothing, program.ToList, New List(Of Integer))
+      Me.InputMode = inputMode
+      Me.OutputMode = outputMode
     End Sub
 
     Public Sub Run()
@@ -47,11 +71,26 @@ Namespace AOC2019
             Program(parameters(2).Value) = GetParameterValue(parameters(0)) * GetParameterValue(parameters(1))
 
           Case 3
-            Console.Write("Input: ")
-            Program(parameters(0).Value) = Convert.ToInt32(Console.ReadLine)
+            Dim value As Integer
+            If InputMode = IOMode.External Then
+              Console.Write("Input: ")
+              value = Convert.ToInt32(Console.ReadLine)
+            Else
+              If InputQueue.Any Then
+                value = InputQueue.Dequeue()
+              Else
+                Throw New Exception("Empty input queue for input operation at position " & pointer)
+              End If
+            End If
+            Program(parameters(0).Value) = value
 
           Case 4
-            Console.WriteLine(GetParameterValue(parameters(0)))
+            Dim value As Integer = GetParameterValue(parameters(0))
+            If OutputMode = IOMode.External Then
+              Console.WriteLine(value)
+            Else
+              OutputList.Add(value)
+            End If
 
           Case 5
             If GetParameterValue(parameters(0)) <> 0 Then
@@ -77,6 +116,14 @@ Namespace AOC2019
 
         pointer = pointer + operation.ParameterCount + 1
       Loop
+    End Sub
+
+    Public Sub ClearOutput()
+      If OutputMode = IOMode.Internal Then
+        OutputList.Clear
+      Else
+        Throw New Exception("Cannot clear output data when not in internal output mode")
+      End If
     End Sub
 
 
@@ -123,5 +170,10 @@ Namespace AOC2019
   Public Enum ParameterMode
     Position = 0
     Immediate = 1
+  End Enum
+
+  Public Enum IOMode
+    External = 0
+    Internal = 1
   End Enum
 End Namespace
