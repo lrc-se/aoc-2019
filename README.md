@@ -60,3 +60,12 @@ Day 7
 __VB (.NET 4.7)__
 
 Back in CLR land, now with multithreading.
+
+
+Day 8
+-----
+
+__Assembly (x86)__
+
+Another visit to the distant past, using DOS service calls. Numerical values are printed in big-endian hex format, and in the rendered image `.` represents black and `#` white.
+Assembled with NASM to .COM binary targets and tested in dosbox.
