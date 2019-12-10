@@ -69,3 +69,11 @@ __Assembly (x86)__
 
 Another visit to the distant past, using DOS service calls. Numerical values are printed in big-endian hex format, and in the rendered image `.` represents black and `#` white.
 Assembled with NASM to .COM binary targets and tested in dosbox.
+
+
+Day 9
+-----
+
+__Java (JDK 13)__
+
+The intcode runner is ported from the previous .NET version and so may not be entirely idiomatic. No project structure, just plain source files.
