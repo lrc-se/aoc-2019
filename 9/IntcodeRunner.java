@@ -14,6 +14,7 @@ public class IntcodeRunner {
     new Operation(9, 1),
     new Operation(99, 0)
   );
+  private static final int DEFAULT_MEMORY_SIZE = 1024;
 
   private int relativeBase = 0;
   private Queue<Long> inputQueue = new LinkedList<>();
@@ -27,7 +28,7 @@ public class IntcodeRunner {
     void halted();
   }
 
-  public List<Long> program;
+  public List<Long> memory;
   public IOMode inputMode;
   public IOMode outputMode;
 
@@ -36,14 +37,39 @@ public class IntcodeRunner {
     this(null);
   }
 
-  public IntcodeRunner(Collection<Long> program) {
-    this(program, IOMode.EXTERNAL, IOMode.EXTERNAL);
+  public IntcodeRunner(int memorySize) {
+    this(null, memorySize);
+  }
+
+    public IntcodeRunner(Collection<Long> program) {
+    this(program, DEFAULT_MEMORY_SIZE);
+  }
+
+  public IntcodeRunner(Collection<Long> program, int memorySize) {
+    this(program, IOMode.EXTERNAL, IOMode.EXTERNAL, memorySize);
   }
 
   public IntcodeRunner(Collection<Long> program, IOMode inputMode, IOMode outputMode) {
-    this.program = (program != null ? new ArrayList<>(program) : new ArrayList<>());
+    setProgram(program);
     this.inputMode = inputMode;
     this.outputMode = outputMode;
+  }
+
+  public IntcodeRunner(Collection<Long> program, IOMode inputMode, IOMode outputMode, int memorySize) {
+    setProgram(program, memorySize);
+    this.inputMode = inputMode;
+    this.outputMode = outputMode;
+  }
+
+
+  public void setProgram(Collection<Long> program) {
+    setProgram(program, DEFAULT_MEMORY_SIZE);
+  }
+
+  public void setProgram(Collection<Long> program, int memorySize) {
+    int programSize = (program != null ? program.size() : 0);
+    memory = (programSize > 0 ? new ArrayList<>(program) : new ArrayList<>());
+    memory.addAll(Collections.nCopies(memorySize - programSize, 0L));
   }
 
   public Queue<Long> getInputQueue() {
@@ -65,8 +91,8 @@ public class IntcodeRunner {
   public void run() throws Exception {
     int pointer = 0;
     relativeBase = 0;
-    while (pointer < program.size()) {
-      Instruction instruction = new Instruction(program.get(pointer));
+    while (pointer < memory.size()) {
+      Instruction instruction = new Instruction(memory.get(pointer));
 
       Operation operation = OPERATIONS.stream().filter(o -> o.code == instruction.opcode).findFirst().orElse(null);
       if (operation == null) {
@@ -76,18 +102,18 @@ public class IntcodeRunner {
       List<Parameter> parameters = new ArrayList<>();
       for (int i = 0; i < operation.parameterCount; i++) {
         parameters.add(
-            new Parameter(program.get(pointer + i + 1),
+            new Parameter(memory.get(pointer + i + 1),
                 (i < instruction.parameterModes.size() ? instruction.parameterModes.get(i) : ParameterMode.POSITION)));
       }
 
       switch (operation.code) {
       case 1:
-        program.set((int)parameters.get(2).value,
+        memory.set((int)parameters.get(2).value,
             getParameterValue(parameters.get(0)) + getParameterValue(parameters.get(1)));
         break;
 
       case 2:
-        program.set((int)parameters.get(2).value,
+        memory.set((int)parameters.get(2).value,
             getParameterValue(parameters.get(0)) * getParameterValue(parameters.get(1)));
         break;
 
@@ -117,7 +143,7 @@ public class IntcodeRunner {
           System.out.print("Input: ");
           value = Integer.parseInt(System.console().readLine());
         }
-        program.set((int)parameters.get(0).value, value);
+        memory.set((int)parameters.get(0).value, value);
         break;
       }
 
@@ -148,18 +174,17 @@ public class IntcodeRunner {
         break;
 
       case 7:
-        program.set((int)parameters.get(2).value,
+        memory.set((int)parameters.get(2).value,
             (getParameterValue(parameters.get(0)) < getParameterValue(parameters.get(1)) ? 1L : 0L));
         break;
 
       case 8:
-        program.set((int)parameters.get(2).value,
+        memory.set((int)parameters.get(2).value,
             (getParameterValue(parameters.get(0)) == getParameterValue(parameters.get(1)) ? 1L : 0L));
         break;
 
       case 9:
         relativeBase += getParameterValue(parameters.get(0));
-        System.out.println(relativeBase);
         break;
 
       case 99:
@@ -215,11 +240,11 @@ public class IntcodeRunner {
         value = parameter.value;
         break;
       case RELATIVE:
-        value = program.get(relativeBase + (int)parameter.value);
+        value = memory.get(relativeBase + (int)parameter.value);
         break;
       case POSITION:
       default:
-        value = program.get((int)parameter.value);
+        value = memory.get((int)parameter.value);
         break;
     }
     return value;
