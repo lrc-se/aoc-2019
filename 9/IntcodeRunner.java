@@ -11,9 +11,11 @@ public class IntcodeRunner {
     new Operation(6, 2),
     new Operation(7, 3),
     new Operation(8, 3),
+    new Operation(9, 1),
     new Operation(99, 0)
   );
 
+  private int relativeBase = 0;
   private Queue<Long> inputQueue = new LinkedList<>();
   private List<Long> outputList = new ArrayList<>();
   private volatile boolean inputAvailable = false;
@@ -62,6 +64,7 @@ public class IntcodeRunner {
 
   public void run() throws Exception {
     int pointer = 0;
+    relativeBase = 0;
     while (pointer < program.size()) {
       Instruction instruction = new Instruction(program.get(pointer));
 
@@ -154,6 +157,11 @@ public class IntcodeRunner {
             (getParameterValue(parameters.get(0)) == getParameterValue(parameters.get(1)) ? 1L : 0L));
         break;
 
+      case 9:
+        relativeBase += getParameterValue(parameters.get(0));
+        System.out.println(relativeBase);
+        break;
+
       case 99:
         fireHaltEvent();
         return;
@@ -201,7 +209,20 @@ public class IntcodeRunner {
 
 
   private long getParameterValue(Parameter parameter) {
-    return (parameter.mode == ParameterMode.POSITION ? program.get((int)parameter.value) : parameter.value);
+    long value;
+    switch (parameter.mode) {
+      case IMMEDIATE:
+        value = parameter.value;
+        break;
+      case RELATIVE:
+        value = program.get(relativeBase + (int)parameter.value);
+        break;
+      case POSITION:
+      default:
+        value = program.get((int)parameter.value);
+        break;
+    }
+    return value;
   }
 
   private void fireOutputEvent(long value) {
