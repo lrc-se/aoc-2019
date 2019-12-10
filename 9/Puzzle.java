@@ -1,8 +1,24 @@
+import java.nio.file.*;
 import java.util.*;
 
 public class Puzzle {
   public static void main(String[] args) {
     runTests();
+
+    try {
+      String inputData = new String(Files.readAllBytes(Paths.get("input.txt")));
+      List<Long> input = new ArrayList<>();
+      for (String code : inputData.strip().split(",")) {
+        input.add(Long.parseLong(code));
+      }
+
+      IntcodeRunner runner = new IntcodeRunner(input, IOMode.INTERNAL, IOMode.EXTERNAL, 4096);
+      runner.getInputQueue().add(1L);
+      runner.run();
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
   }
 
   public static void runTests() {
