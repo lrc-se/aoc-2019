@@ -108,12 +108,12 @@ public class IntcodeRunner {
 
       switch (operation.code) {
       case 1:
-        memory.set((int)parameters.get(2).value,
+        memory.set(getPosition(parameters.get(2)),
             getParameterValue(parameters.get(0)) + getParameterValue(parameters.get(1)));
         break;
 
       case 2:
-        memory.set((int)parameters.get(2).value,
+        memory.set(getPosition(parameters.get(2)),
             getParameterValue(parameters.get(0)) * getParameterValue(parameters.get(1)));
         break;
 
@@ -143,7 +143,7 @@ public class IntcodeRunner {
           System.out.print("Input: ");
           value = Integer.parseInt(System.console().readLine());
         }
-        memory.set((int)parameters.get(0).value, value);
+        memory.set(getPosition(parameters.get(0)), value);
         break;
       }
 
@@ -174,12 +174,12 @@ public class IntcodeRunner {
         break;
 
       case 7:
-        memory.set((int)parameters.get(2).value,
+        memory.set(getPosition(parameters.get(2)),
             (getParameterValue(parameters.get(0)) < getParameterValue(parameters.get(1)) ? 1L : 0L));
         break;
 
       case 8:
-        memory.set((int)parameters.get(2).value,
+        memory.set(getPosition(parameters.get(2)),
             (getParameterValue(parameters.get(0)) == getParameterValue(parameters.get(1)) ? 1L : 0L));
         break;
 
@@ -248,6 +248,21 @@ public class IntcodeRunner {
         break;
     }
     return value;
+  }
+
+  private int getPosition(Parameter parameter) throws Exception {
+    int position = (int)parameter.value;
+    switch (parameter.mode) {
+      case IMMEDIATE:
+        throw new Exception("Write parameter cannot be immediate");
+      case RELATIVE:
+        position = relativeBase + (int)parameter.value;
+        break;
+      case POSITION:
+        position = (int)parameter.value;
+        break;
+    }
+    return position;
   }
 
   private void fireOutputEvent(long value) {
