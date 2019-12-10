@@ -13,8 +13,16 @@ public class Puzzle {
       }
 
       IntcodeRunner runner = new IntcodeRunner(input, IOMode.INTERNAL, IOMode.EXTERNAL, 4096);
+      System.out.print("Puzzle 1 result: ");
       runner.getInputQueue().add(1L);
       runner.run();
+
+      runner.getInputQueue().add(2L);
+      System.out.print("Puzzle 2 result: ");
+      long start = System.nanoTime();
+      runner.run();
+      long end = System.nanoTime();
+      System.out.println("Puzzle 2 execution time: " + ((end - start) / 1000000) + "ms");
     } catch (Exception e) {
       e.printStackTrace();
       System.exit(1);
