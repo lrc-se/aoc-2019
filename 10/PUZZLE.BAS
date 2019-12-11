@@ -56,6 +56,14 @@ PRINT "Best location: ", asteroids(index%).x; asteroids(index%).y
 PRINT "Visible objects: ", CountVisibleObjects(asteroids(index%), map(), asteroids())
 PRINT
 
+PRINT "PUZZLE 1"
+PRINT "========"
+LoadMap "input.txt", map(), asteroids()
+index% = FindBestMonitorIndex(map(), asteroids())
+PRINT "Best location: ", asteroids(index%).x; asteroids(index%).y
+PRINT "Visible objects: ", CountVisibleObjects(asteroids(index%), map(), asteroids())
+PRINT
+
 FUNCTION CountVisibleObjects% (source AS Coordinate, map() AS STRING, asteroids() AS Coordinate)
   count% = 0
   FOR i% = 0 TO UBOUND(asteroids)
