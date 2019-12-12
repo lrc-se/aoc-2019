@@ -77,3 +77,14 @@ Day 9
 __Java (JDK 13)__
 
 The intcode runner is ported from the previous .NET version and so may not be entirely idiomatic. No project structure, just plain source files.
+
+
+Day 10
+------
+
+__QuickBASIC (7.1)__
+
+Well, this took some doing (and thinking), but a mathematical approach simplified things.
+Some hoops had to be jumped through in order to support both CRLF and LF files,
+not to mention the need to implement quicksort from scratch for the second part. Whew!
+Written and run with QBX in dosbox.
