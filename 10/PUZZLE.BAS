@@ -90,7 +90,6 @@ LoadMap "input.txt", map(), asteroids()
 index% = FindBestMonitorIndex(map(), asteroids())
 PRINT "Best location: ", asteroids(index%).x; asteroids(index%).y
 PRINT "Visible objects: ", CountVisibleObjects(asteroids(index%), map(), asteroids())
-PRINT
 SYSTEM
 
 Part2:
@@ -139,6 +138,14 @@ PRINT "299th asteroid vaporized: ", vaporized(298).x; vaporized(298).y
 PRINT "Last asteroid vaporized: ", vaporized(UBOUND(vaporized)).x; vaporized(UBOUND(vaporized)).y
 PRINT
 SLEEP
+
+PRINT "PUZZLE 2"
+PRINT "========"
+LoadMap "input.txt", map(), asteroids()
+index% = FindBestMonitorIndex(map(), asteroids())
+VaporizeAsteroids asteroids(index%), map(), asteroids(), vaporized()
+PRINT "200th asteroid vaporized: ", vaporized(199).x; vaporized(199).y
+PRINT "Result: "; vaporized(199).x * 100 + vaporized(199).y
 
 FUNCTION CountVisibleObjects% (source AS Coordinate, map() AS STRING, asteroids() AS Coordinate)
   count% = 0
