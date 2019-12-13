@@ -10,8 +10,32 @@ namespace AOC2019
     public static void Main()
     {
       RunExamples();
+      Console.WriteLine();
+
+      var simulator = new MotionSimulator(LoadBodies());
+      simulator.Run(1000);
+      Console.WriteLine("PUZZLE 1");
+      Console.WriteLine("========");
+      Console.WriteLine("Total energy: " + simulator.Bodies.Sum(b => b.TotalEnergy));
     }
 
+
+    private static IList<Body> LoadBodies(string filename = "input.txt")
+    {
+      var bodies = new List<Body>();
+      var coordinates = System.IO.File.ReadAllLines(filename);
+      var re = new System.Text.RegularExpressions.Regex(@"\<x=(-?\d+),\s*y=(-?\d+),\s*z=(-?\d+)\>");
+      foreach (string coordinate in coordinates)
+      {
+        var matches = re.Matches(coordinate);
+        bodies.Add(new Body(new Vector(
+          Convert.ToInt32(matches[0].Groups[1].Value),
+          Convert.ToInt32(matches[0].Groups[2].Value),
+          Convert.ToInt32(matches[0].Groups[3].Value)
+        )));
+      }
+      return bodies;
+    }
 
     private static void RunExamples()
     {
