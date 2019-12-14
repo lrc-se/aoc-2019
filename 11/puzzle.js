@@ -86,13 +86,16 @@ var Puzzle = (function(doc) {
     AOC.printLine("Number of painted panels: " + numPainted);
   }
 
-  function runPuzzle1() {
+  function runPuzzle(part) {
     if(AOC.isRunning()) {
       alert("Robot already running!")
       return;
     }
     AOC.setState("running");
     reset();
+    if(part == 2) {
+      hull[pos.y][pos.x] = 1;
+    }
 
     var runner = Intcode.createRunner(input);
     runner.onoutput = function(value) {
@@ -136,7 +139,12 @@ var Puzzle = (function(doc) {
     AOC.init();
     AOC.getJSON("input", function(program) {
       input = program;
-      doc.getElementById("run-puzzle1").addEventListener("click", runPuzzle1);
+      doc.getElementById("run-puzzle1").addEventListener("click", function() {
+        runPuzzle(1);
+      });
+      doc.getElementById("run-puzzle2").addEventListener("click", function() {
+        runPuzzle(2);
+      });
     });
   }
 
