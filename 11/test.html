@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf8">
+  <title>Day 11: tests</title>
+  <script src="intcode.js"></script>
+  <script src="main.js"></script>
+  <script src="test.js"></script>
+  <link href="style.css" rel="stylesheet">
+</head>
+<body class="halted">
+  <h1>Day 11: tests</h1>
+  <div>
+    <strong>Output:</strong>
+    <button id="clear-output">Clear</button>
+  </div>
+  <div id="output"></div>
+  <p>
+    <strong>State:</strong>
+    <span class="state halted">Halted</span>
+    <span class="state running">Running</span>
+    <span class="state waiting">Waiting for input</span>
+  </p>
+  <p>
+    <button class="run-test" data-test="quine">Run quine test</button>
+    <button class="run-test" data-test="large-number" data-input="34915192,34915192">Run large number test</button>
+    <button class="run-test" data-test="boost" data-input="1" data-delay="1000">Run BOOST test #1</button>
+    <button class="run-test" data-test="boost" data-input="2" data-delay="1000">Run BOOST test #2</button>
+  </p>
+  <p><em><strong>Note:</strong> Delays have been introduced to demonstrate the various execution states.</em></p>
+  <script>
+    Test.init();
+  </script>
+</body>
+</html>
