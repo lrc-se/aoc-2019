@@ -9,7 +9,7 @@ namespace AOC2019
   {
     public static void Main()
     {
-      RunExamples();
+      RunExamples1();
       Console.WriteLine();
 
       var simulator = new MotionSimulator(LoadBodies());
@@ -17,6 +17,9 @@ namespace AOC2019
       Console.WriteLine("PUZZLE 1");
       Console.WriteLine("========");
       Console.WriteLine("Total energy: " + simulator.Bodies.Sum(b => b.TotalEnergy));
+      Console.WriteLine();
+
+      RunExamples2();
     }
 
 
@@ -37,7 +40,36 @@ namespace AOC2019
       return bodies;
     }
 
-    private static void RunExamples()
+    private static long FindRepeatSteps(IEnumerable<Body> bodies, long maxSteps = 1000000000)
+    {
+      var simulator = new MotionSimulator();
+      var steps = new long[] { -1, -1, -1 };
+
+      for (int i = 0; i < 3; i++)
+      {
+        simulator.Bodies = bodies.Select(b => b.Clone()).ToList();
+        var axis = (Axis)i;
+        string state = simulator.GetAxisState(axis);
+
+        for (long j = 0; j < maxSteps; j++)
+        {
+          simulator.Run();
+          if (simulator.GetAxisState(axis) == state)
+          {
+            steps[i] = j + 1;
+            break;
+          }
+        }
+      }
+
+      if (steps.Any(s => s == -1))
+      {
+        return -1;
+      }
+      return MathUtils.Lcm(MathUtils.Lcm(steps[0], steps[1]), steps[2]);
+    }
+
+    private static void RunExamples1()
     {
       var simulator = new MotionSimulator();
 
@@ -75,6 +107,34 @@ namespace AOC2019
         Console.WriteLine();
       }
       Console.WriteLine("Total energy: " + simulator.Bodies.Sum(b => b.TotalEnergy));
+    }
+
+    private static void RunExamples2()
+    {
+      IList<Body> bodies;
+
+      Console.WriteLine("EXAMPLE 3");
+      Console.WriteLine("=========");
+      bodies = new List<Body>()
+      {
+        new Body(new Vector(-1, 0, 2)),
+        new Body(new Vector(2, -10, -7)),
+        new Body(new Vector(4, -8, 8)),
+        new Body(new Vector(3, 5, -1))
+      };
+      Console.WriteLine("Total repeat steps: " + FindRepeatSteps(bodies));
+      Console.WriteLine();
+
+      Console.WriteLine("EXAMPLE 4");
+      Console.WriteLine("=========");
+      bodies = new List<Body>()
+      {
+        new Body(new Vector(-8, -10, 0)),
+        new Body(new Vector(5, 5, 10)),
+        new Body(new Vector(2, -7, 3)),
+        new Body(new Vector(9, -8, -3))
+      };
+      Console.WriteLine("Total repeat steps: " + FindRepeatSteps(bodies));
     }
 
     private static void PrintStatus(MotionSimulator simulator)

@@ -24,6 +24,22 @@ namespace AOC2019
       }
     }
 
+    public string GetAxisState(Axis axis)
+    {
+      return String.Join(" ", Bodies.Select(b => {
+        switch (axis)
+        {
+          case Axis.X:
+            return b.Position.X + ":" + b.Velocity.X;
+          case Axis.Y:
+            return b.Position.Y + ":" + b.Velocity.Y;
+          case Axis.Z:
+            return b.Position.Z + ":" + b.Velocity.Z;
+        }
+        return "";
+      }));
+    }
+
 
     private IEnumerable<Tuple<Body, Body>> GetPairs()
     {
@@ -101,6 +117,11 @@ namespace AOC2019
       Position = position;
       Velocity = velocity ?? new Vector(0, 0, 0);
     }
+
+    public Body Clone()
+    {
+      return new Body(new Vector(Position.X, Position.Y, Position.Z), new Vector(Velocity.X, Velocity.Y, Velocity.Z));
+    }
   }
 
   public class Vector
@@ -115,5 +136,12 @@ namespace AOC2019
       Y = y;
       Z = z;
     }
+  }
+
+  public enum Axis
+  {
+    X = 0,
+    Y = 1,
+    Z = 2
   }
 }
