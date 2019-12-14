@@ -93,7 +93,9 @@ Written and run with QBX in dosbox.
 Day 11
 ------
 
-*TBA*
+__JavaScript (browser/DOM)__
+
+Yet another port of the intcode runner, which is now wholly event-based. Vanilla ES5 all the way, with AJAX retrieval of input data.
 
 
 Day 12
