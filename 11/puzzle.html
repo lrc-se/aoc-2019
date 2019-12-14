@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf8">
+  <title>AoC 2019: Day 11 – Puzzles</title>
+  <script src="intcode.js"></script>
+  <script src="main.js"></script>
+  <script src="puzzle.js"></script>
+  <link href="style.css" rel="stylesheet">
+</head>
+<body class="halted">
+  <h1>AoC 2019: Day 11 – Puzzles</h1>
+  <div>
+    <strong>Output:</strong>
+    <button id="clear-output">Clear</button>
+  </div>
+  <div id="output"></div>
+  <p>
+    <strong>State:</strong>
+    <span class="state halted">Halted</span>
+    <span class="state running">Running</span>
+    <span class="state waiting">Waiting for input</span>
+  </p>
+  <p>
+    <button id="run-puzzle1">Run puzzle 1</button>
+  </p>
+  <script>
+    Puzzle.init();
+  </script>
+</body>
+</html>
