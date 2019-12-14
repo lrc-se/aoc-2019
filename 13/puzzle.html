@@ -4,12 +4,20 @@
   <meta charset="utf8">
   <title>AoC 2019: Day 13</title>
   <link href="style.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
   <script src="intcode.js"></script>
   <script src="puzzle.js"></script>
 </head>
 <body>
   <h1>AoC 2019: Day 13</h1>
-  <p><em>Answer in console</em></p>
+  <div id="aoc-arcade-app" v-cloak>
+    <aoc-arcade inline-template>
+      <div class="aoc-arcade">
+        <p><em>Answer in console</em></p>
+      </div>
+    </aoc-arcade>
+  </div>
   <script>
     Puzzle.init();
   </script>

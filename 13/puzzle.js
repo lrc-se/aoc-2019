@@ -6,86 +6,125 @@ var Puzzle = (function() {
     Y: 1,
     TILE: 2
   };
-  var width = 100;
-  var height = 100;
 
-  var input;
-  var screen;
-  var pos;
-  var outputType;
+  var app;
 
-
-  function handleOutput(value) {
-    switch(outputType) {
-      case OutputTypes.X:
-        pos.x = value;
-        break;
-      case OutputTypes.Y:
-        pos.y = value;
-        break;
-      case OutputTypes.TILE:
-        screen[pos.y][pos.x] = value;
-        break;
-    }
-
-    outputType++;
-    if(outputType > OutputTypes.TILE) {
-      outputType = OutputTypes.X;
-    }
-  }
-
-  function handleHalt() {
-    var numBlocks = 0;
-    screen.forEach(function(row) {
-      row.forEach(function(tile) {
-        if(tile === 2) {
-          numBlocks++;
+  function getJSON(name) {
+    return new Promise(function(resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", name + ".json");
+      xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4) {
+          if(xhr.status == 200) {
+            resolve(JSON.parse(xhr.responseText));
+          } else {
+            reject();
+          }
         }
-      });
+      };
+      xhr.send();
     });
-    console.log("Number of block tiles: " + numBlocks);
-  }
-
-  function runPuzzle1() {
-    reset();
-    var runner = Intcode.createRunner(input);
-    runner.onoutput = handleOutput;
-    runner.onhalt = handleHalt;
-    runner.run();
-  }
-
-  function reset() {
-    screen = [];
-    for(var y = 0; y < width; ++y) {
-      var row = [];
-      for(var x = 0; x < height; ++x) {
-        row.push(0);
-      }
-      screen.push(row);
-    }
-
-    outputType = OutputTypes.X;
-    pos = {
-      x: 0,
-      y: 0
-    };
-  }
-
-  function getJSON(name, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", name + ".json");
-    xhr.onreadystatechange = function() {
-      if(xhr.readyState == 4) {
-        callback(JSON.parse(xhr.responseText));
-      }
-    };
-    xhr.send();
   }
 
   function init() {
-    getJSON("input", function(program) {
-      input = program;
-      runPuzzle1();
+    var Arcade = {
+      props: {
+        width: {
+          type: Number,
+          default: 100
+        },
+
+        height: {
+          type: Number,
+          default: 100
+        }
+      },
+
+      data: function() {
+        return {
+          program: null,
+          finished: false,
+          screen: [],
+          outputType: null,
+          pos: {}
+        };
+      },
+
+      methods: {
+        reset: function() {
+          this.screen = [];
+          for(var y = 0; y < this.width; ++y) {
+            var row = [];
+            for(var x = 0; x < this.height; ++x) {
+              row.push(0);
+            }
+            this.screen.push(row);
+          }
+
+          this.outputType = OutputTypes.X;
+          this.pos = {
+            x: 0,
+            y: 0
+          };
+        },
+
+        startGame: function() {
+          this.reset();
+          var runner = Intcode.createRunner(this.program);
+          runner.onoutput = this.handleOutput;
+          runner.onhalt = this.handleHalt;
+          runner.run();
+        },
+
+        handleOutput: function(value) {
+          switch(this.outputType) {
+            case OutputTypes.X:
+              this.pos.x = value;
+              break;
+            case OutputTypes.Y:
+              this.pos.y = value;
+              break;
+            case OutputTypes.TILE:
+              this.screen[this.pos.y][this.pos.x] = value;
+              break;
+          }
+
+          this.outputType++;
+          if(this.outputType > OutputTypes.TILE) {
+            this.outputType = OutputTypes.X;
+          }
+        },
+
+        handleHalt: function() {
+          var numBlocks = 0;
+          this.screen.forEach(function(row) {
+            row.forEach(function(tile) {
+              if(tile === 2) {
+                numBlocks++;
+              }
+            });
+          });
+          console.log("Number of block tiles: " + numBlocks);
+
+          this.finished = true;
+        }
+      },
+
+      mounted: function() {
+        var vm = this;
+        getJSON("input").then(function(program) {
+          vm.program = program;
+          vm.startGame();
+        });
+      }
+    };
+
+    app = new Vue({
+      el: "#aoc-arcade",
+
+      components: {
+        "aoc-arcade": Arcade
+      }
     });
   }
 
