@@ -20,6 +20,11 @@ namespace AOC2019
       Console.WriteLine();
 
       RunExamples2();
+      Console.WriteLine();
+
+      Console.WriteLine("PUZZLE 2");
+      Console.WriteLine("========");
+      Console.WriteLine("Total repeat steps: " + FindRepeatSteps(LoadBodies()));
     }
 
 
