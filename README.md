@@ -88,3 +88,17 @@ Well, this took some doing (and thinking), but a mathematical approach simplifie
 Some hoops had to be jumped through in order to support both CRLF and LF files,
 not to mention the need to implement quicksort from scratch for the second part. Whew!
 Written and run with QBX in dosbox.
+
+
+Day 11
+------
+
+*TBA*
+
+
+Day 12
+------
+
+__C# (.NET 4.7)__
+
+First full return show of the series. Still big on types, but with a string-based shortcut in part two.
