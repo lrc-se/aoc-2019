@@ -147,9 +147,12 @@ var Puzzle = (function() {
         },
 
         movePaddle: function() {
-          var delta = Math.sign(this.pos.x - this.paddlePos.x);
+          var vm = this;
           requestAnimationFrame(function() {
-            computer.enqueueInput(delta);
+            if(!vm.auto) {
+              return;
+            }
+            computer.enqueueInput(Math.sign(vm.pos.x - vm.paddlePos.x));
           });
         },
 
@@ -178,6 +181,11 @@ var Puzzle = (function() {
                 this.movePaddle();
               }
               break;
+            case "Escape":
+            case "Esc":
+            case 27:
+              this.reset();
+              this.startGame();
           }
         },
 
