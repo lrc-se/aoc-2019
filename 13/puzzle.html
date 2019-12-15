@@ -4,6 +4,7 @@
   <meta charset="utf8">
   <title>AoC 2019: Day 13</title>
   <link href="style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Iceland&amp;display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
   <script src="intcode.js"></script>
@@ -30,6 +31,10 @@
             </div>
           </div>
         </aoc-arcade-display>
+        <div v-if="finished" class="aoc-arcade-finished">
+          Game over!<br>
+          Press ESC to restart
+        </div>
       </div>
     </aoc-arcade>
   </div>

@@ -117,6 +117,7 @@ var Puzzle = (function() {
 
       methods: {
         reset: function() {
+          this.finished = false;
           this.auto = false;
           this.score = 0;
           this.outputType = OutputTypes.X;
@@ -186,7 +187,11 @@ var Puzzle = (function() {
             case 27:
               this.reset();
               this.startGame();
+              break;
+            default:
+              return;
           }
+          e.preventDefault();
         },
 
         handleOutput: function(value) {
