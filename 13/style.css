@@ -23,7 +23,7 @@ h1 {
 }
 
 .aoc-arcade-screen-tile {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   flex-shrink: 0;
 }
