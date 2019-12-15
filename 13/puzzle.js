@@ -79,9 +79,11 @@ var Puzzle = (function() {
         return {
           program: null,
           finished: false,
+          auto: false,
           screen: [],
           outputType: null,
-          pos: {}
+          pos: {},
+          paddlePos: {}
         };
       },
 
@@ -115,6 +117,13 @@ var Puzzle = (function() {
           computer.run();
         },
 
+        movePaddle: function() {
+          var delta = Math.sign(this.pos.x - this.paddlePos.x);
+          requestAnimationFrame(function() {
+            computer.enqueueInput(delta);
+          });
+        },
+
         handleKey: function(e) {
           var key = e.key || e.keyCode || e.which;
           switch(key) {
@@ -133,6 +142,13 @@ var Puzzle = (function() {
             case 40:
               computer.enqueueInput(0);
               break;
+            case "Enter":
+            case 13:
+              this.auto = !this.auto;
+              if(this.auto) {
+                this.movePaddle();
+              }
+              break;
           }
         },
 
@@ -149,6 +165,12 @@ var Puzzle = (function() {
                 console.log("Score: " + value);
               } else {
                 this.screen[this.pos.y].splice(this.pos.x, 1, value);
+                if(value === 3) {
+                  this.paddlePos.x = this.pos.x;
+                  this.paddlePos.y = this.pos.y;
+                } else if(this.auto && value === 4) {
+                  this.movePaddle();
+                }
               }
               break;
           }
