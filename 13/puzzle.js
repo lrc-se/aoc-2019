@@ -8,6 +8,7 @@ var Puzzle = (function() {
   };
 
   var app;
+  var computer;
 
   function getJSON(name) {
     return new Promise(function(resolve, reject) {
@@ -104,13 +105,35 @@ var Puzzle = (function() {
 
         startGame: function() {
           this.reset();
-          var runner = Intcode.createRunner(this.program);
+          document.addEventListener("keydown", this.handleKey);
+          computer = Intcode.createRunner(this.program);
           if(this.quarters > 0) {
-            runner.memory[0] = this.quarters;
+            computer.memory[0] = this.quarters;
           }
-          runner.onoutput = this.handleOutput;
-          runner.onhalt = this.handleHalt;
-          runner.run();
+          computer.onoutput = this.handleOutput;
+          computer.onhalt = this.handleHalt;
+          computer.run();
+        },
+
+        handleKey: function(e) {
+          var key = e.key || e.keyCode || e.which;
+          switch(key) {
+            case "ArrowLeft":
+            case "Left":
+            case 37:
+              computer.enqueueInput(-1);
+              break;
+            case "ArrowRight":
+            case "Right":
+            case 39:
+              computer.enqueueInput(1);
+              break;
+            case "ArrowDown":
+            case "Down":
+            case 40:
+              computer.enqueueInput(0);
+              break;
+          }
         },
 
         handleOutput: function(value) {
