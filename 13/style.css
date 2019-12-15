@@ -1,7 +1,11 @@
 body {
   margin: 0;
-  padding: 1em;
+  padding: 2em;
+  color: #fff;
+  background-color: #000;
   font-family: sans-serif;
+  text-align: center;
+  overflow-y: scroll;
 }
 
 h1 {
@@ -13,8 +17,6 @@ h1 {
 }
 
 .aoc-arcade-screen {
-  color: #fff;
-  background-color: #000;
   display: inline-block;
 }
 
@@ -26,4 +28,78 @@ h1 {
   width: 25px;
   height: 25px;
   flex-shrink: 0;
+}
+
+.aoc-arcade-display {
+  margin-top: 2em;
+  display: flex;
+  justify-content: center;
+}
+
+.aoc-arcade-display-digit {
+  position: relative;
+  width: 30px;
+  height: 60px;
+  margin: 0 .25em;
+}
+
+.aoc-arcade-display-segment {
+  position: absolute;
+}
+
+.aoc-arcade-display-segment:first-child {
+  left: 10%;
+  top: 0;
+  right: 10%;
+  height: 5%;
+}
+
+.aoc-arcade-display-segment:nth-child(2) {
+  left: 0;
+  top: 6%;
+  bottom: 55%;
+  width: 10%;
+}
+
+.aoc-arcade-display-segment:nth-child(3) {
+  top: 6%;
+  right: 0;
+  bottom: 55%;
+  width: 10%;
+}
+
+.aoc-arcade-display-segment:nth-child(4) {
+  left: 10%;
+  top: 46%;
+  right: 10%;
+  height: 5%;
+}
+
+.aoc-arcade-display-segment:nth-child(5) {
+  left: 0;
+  top: 55%;
+  bottom: 6%;
+  width: 10%;
+}
+
+.aoc-arcade-display-segment:nth-child(6) {
+  top: 55%;
+  right: 0;
+  bottom: 6%;
+  width: 10%;
+}
+
+.aoc-arcade-display-segment:last-child {
+  left: 10%;
+  bottom: 0;
+  right: 10%;
+  height: 5%;
+}
+
+.aoc-arcade-display-segment-off {
+  background-color: rgba(192, 0, 0, .25);
+}
+
+.aoc-arcade-display-segment-on {
+  background-color: #c00;
 }

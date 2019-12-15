@@ -44,18 +44,45 @@ var Puzzle = (function() {
           type: Array,
           required: true
         }
+      }
+    };
+
+    var ArcadeDisplay = {
+      props: {
+        score: {
+          type: Number,
+          default: 0
+        }
       },
 
       data: function() {
         return {
-
+          segments: {
+            0: [1, 1, 1, 0, 1, 1, 1],
+            1: [0, 0, 1, 0, 0, 1, 0],
+            2: [1, 0, 1, 1, 1, 0, 1],
+            3: [1, 0, 1, 1, 0, 1, 1],
+            4: [0, 1, 1, 1, 0, 1, 0],
+            5: [1, 1, 0, 1, 0, 1, 1],
+            6: [1, 1, 0, 1, 1, 1, 1],
+            7: [1, 0, 1, 0, 0, 1, 0],
+            8: [1, 1, 1, 1, 1, 1, 1],
+            9: [1, 1, 1, 1, 0, 1, 1]
+          }
         };
+      },
+
+      computed: {
+        digits: function() {
+          return this.score.toString().split("");
+        }
       }
     };
 
     var Arcade = {
       components: {
-        "aoc-arcade-screen": ArcadeScreen
+        "aoc-arcade-screen": ArcadeScreen,
+        "aoc-arcade-display": ArcadeDisplay
       },
 
       props: {
@@ -80,6 +107,7 @@ var Puzzle = (function() {
           program: null,
           finished: false,
           auto: false,
+          score: 0,
           screen: [],
           outputType: null,
           pos: {},
@@ -89,6 +117,14 @@ var Puzzle = (function() {
 
       methods: {
         reset: function() {
+          this.auto = false;
+          this.score = 0;
+          this.outputType = OutputTypes.X;
+          this.pos = {
+            x: 0,
+            y: 0
+          };
+
           this.screen = [];
           for(var y = 0; y < this.height; ++y) {
             var row = [];
@@ -97,17 +133,10 @@ var Puzzle = (function() {
             }
             this.screen.push(row);
           }
-
-          this.outputType = OutputTypes.X;
-          this.pos = {
-            x: 0,
-            y: 0
-          };
         },
 
         startGame: function() {
           this.reset();
-          document.addEventListener("keydown", this.handleKey);
           computer = Intcode.createRunner(this.program);
           if(this.quarters > 0) {
             computer.memory[0] = this.quarters;
@@ -162,7 +191,7 @@ var Puzzle = (function() {
               break;
             case OutputTypes.TILE:
               if(this.pos.x === -1 && this.pos.y === 0) {
-                console.log("Score: " + value);
+                this.score = value;
               } else {
                 this.screen[this.pos.y].splice(this.pos.x, 1, value);
                 if(value === 3) {
@@ -200,13 +229,14 @@ var Puzzle = (function() {
         var vm = this;
         getJSON("input").then(function(program) {
           vm.program = program;
+          document.addEventListener("keydown", vm.handleKey);
           vm.startGame();
         });
       }
     };
 
     app = new Vue({
-      el: "#aoc-arcade",
+      el: "#aoc-arcade-app",
 
       components: {
         "aoc-arcade": Arcade

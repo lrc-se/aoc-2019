@@ -11,7 +11,7 @@
 </head>
 <body>
   <h1>AoC 2019: Day 13</h1>
-  <div id="aoc-arcade" v-cloak>
+  <div id="aoc-arcade-app" v-cloak>
     <aoc-arcade :width="38" :height="21" :quarters="2" inline-template>
       <div class="aoc-arcade">
         <aoc-arcade-screen :width="width" :height="height" :screen="screen" inline-template>
@@ -23,6 +23,13 @@
             </div>
           </div>
         </aoc-arcade-screen>
+        <aoc-arcade-display :score="score" inline-template>
+          <div class="aoc-arcade-display" :title="score">
+            <div v-for="digit in digits" class="aoc-arcade-display-digit">
+              <span v-for="segment in segments[digit]" class="aoc-arcade-display-segment" :class="'aoc-arcade-display-segment-' + (segment ? 'on' : 'off')"></span>
+            </div>
+          </div>
+        </aoc-arcade-display>
       </div>
     </aoc-arcade>
   </div>
