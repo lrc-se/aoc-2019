@@ -11,10 +11,18 @@
 </head>
 <body>
   <h1>AoC 2019: Day 13</h1>
-  <div id="aoc-arcade-app" v-cloak>
-    <aoc-arcade inline-template>
+  <div id="aoc-arcade" v-cloak>
+    <aoc-arcade :width="38" :height="21" :quarters="2" inline-template>
       <div class="aoc-arcade">
-        <p><em>Answer in console</em></p>
+        <aoc-arcade-screen :width="width" :height="height" :screen="screen" inline-template>
+          <div class="aoc-arcade-screen">
+            <div v-for="row in screen" class="aoc-arcade-screen-row">
+              <div v-for="tile in row" class="aoc-arcade-screen-tile" :class="'aoc-arcade-screen-tile-' + tile">
+                <span v-if="tile !== 0">{{ tile }}</span>
+              </div>
+            </div>
+          </div>
+        </aoc-arcade-screen>
       </div>
     </aoc-arcade>
   </div>

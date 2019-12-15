@@ -11,3 +11,19 @@ h1 {
 [v-cloak] {
   display: none;
 }
+
+.aoc-arcade-screen {
+  color: #fff;
+  background-color: #000;
+  display: inline-block;
+}
+
+.aoc-arcade-screen-row {
+  display: flex;
+}
+
+.aoc-arcade-screen-tile {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}

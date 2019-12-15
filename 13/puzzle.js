@@ -27,7 +27,36 @@ var Puzzle = (function() {
   }
 
   function init() {
+    var ArcadeScreen = {
+      props: {
+        width: {
+          type: Number,
+          required: true
+        },
+
+        height: {
+          type: Number,
+          required: true
+        },
+
+        screen: {
+          type: Array,
+          required: true
+        }
+      },
+
+      data: function() {
+        return {
+
+        };
+      }
+    };
+
     var Arcade = {
+      components: {
+        "aoc-arcade-screen": ArcadeScreen
+      },
+
       props: {
         width: {
           type: Number,
@@ -37,6 +66,11 @@ var Puzzle = (function() {
         height: {
           type: Number,
           default: 100
+        },
+
+        quarters: {
+          type: Number,
+          default: 0
         }
       },
 
@@ -53,9 +87,9 @@ var Puzzle = (function() {
       methods: {
         reset: function() {
           this.screen = [];
-          for(var y = 0; y < this.width; ++y) {
+          for(var y = 0; y < this.height; ++y) {
             var row = [];
-            for(var x = 0; x < this.height; ++x) {
+            for(var x = 0; x < this.width; ++x) {
               row.push(0);
             }
             this.screen.push(row);
@@ -71,6 +105,9 @@ var Puzzle = (function() {
         startGame: function() {
           this.reset();
           var runner = Intcode.createRunner(this.program);
+          if(this.quarters > 0) {
+            runner.memory[0] = this.quarters;
+          }
           runner.onoutput = this.handleOutput;
           runner.onhalt = this.handleHalt;
           runner.run();
@@ -85,7 +122,11 @@ var Puzzle = (function() {
               this.pos.y = value;
               break;
             case OutputTypes.TILE:
-              this.screen[this.pos.y][this.pos.x] = value;
+              if(this.pos.x === -1 && this.pos.y === 0) {
+                console.log("Score: " + value);
+              } else {
+                this.screen[this.pos.y].splice(this.pos.x, 1, value);
+              }
               break;
           }
 
