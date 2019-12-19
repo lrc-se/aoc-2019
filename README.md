@@ -116,3 +116,11 @@ There's no build step so we're still not going beyond ES5, but with a Promise po
 
 To play, use the arrow keys to advance one frame: `left` to move left, `right` to move right, and `down` to remain in the same position.
 In addition, `enter` toggles auto mode and `esc` resets the game. And yes, that's an actual paddle.
+
+
+Day 19
+------
+
+__Java (JDK 13)__
+
+Straight copy of the intcode runner from the previous Java implementation (day 9). Quick math-based solutions, without bells or whistles.
