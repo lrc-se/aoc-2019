@@ -36,6 +36,37 @@ class TestShuffler(unittest.TestCase):
     shuffler.deal_with_increment(3)
     self.assertEqual(shuffler.stack, [0, 7, 4, 1, 8, 5, 2, 9, 6, 3])
 
+  def test_shuffle_example1(self):
+    shuffler = Shuffler(10)
+    shuffler.shuffle(("deal with increment 7", "deal into new stack", "deal into new stack"))
+    self.assertEqual(shuffler.stack, [0, 3, 6, 9, 2, 5, 8, 1, 4, 7])
+
+  def test_shuffle_example2(self):
+    shuffler = Shuffler(10)
+    shuffler.shuffle(("cut 6", "deal with increment 7", "deal into new stack"))
+    self.assertEqual(shuffler.stack, [3, 0, 7, 4, 1, 8, 5, 2, 9, 6])
+
+  def test_shuffle_example3(self):
+    shuffler = Shuffler(10)
+    shuffler.shuffle(("deal with increment 7", "deal with increment 9", "cut -2"))
+    self.assertEqual(shuffler.stack, [6, 3, 0, 7, 4, 1, 8, 5, 2, 9])
+
+  def test_shuffle_example4(self):
+    shuffler = Shuffler(10)
+    shuffler.shuffle((
+      "deal into new stack",
+      "cut -2",
+      "deal with increment 7",
+      "cut 8",
+      "cut -4",
+      "deal with increment 7",
+      "cut 3",
+      "deal with increment 9",
+      "deal with increment 3",
+      "cut -1"
+    ))
+    self.assertEqual(shuffler.stack, [9, 2, 5, 8, 1, 4, 7, 0, 3, 6])
+
 
 if __name__ == "__main__":
   unittest.main()

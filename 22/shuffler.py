@@ -2,6 +2,9 @@
 Shuffler module
 """
 
+import re
+
+
 class Shuffler:
   """Card deck shuffler."""
 
@@ -39,3 +42,15 @@ class Shuffler:
         offset -= size
 
     self.stack = tmp
+
+  def shuffle(self, actions):
+    """Shuffle stack using a sequence of actions."""
+    pattern = re.compile(r"-?\d+$")
+    for action in actions:
+      match = pattern.search(action)
+      arg = match.group(0) if match else ""
+      method = getattr(self, pattern.sub("", action).strip().replace(" ", "_"))
+      if arg:
+        method(int(arg))
+      else:
+        method()
