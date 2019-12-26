@@ -14,6 +14,8 @@ namespace AOC2019
       RunPuzzle1();
       Console.WriteLine();
       RunExamples2();
+      Console.WriteLine();
+      RunPuzzle2();
     }
 
     private static void RunPuzzle1()
@@ -27,6 +29,16 @@ namespace AOC2019
       PrintScan(automaton);
       Console.WriteLine();
       Console.WriteLine("Biodiversity rating: " + automaton.GetBiodiversityRating());
+    }
+
+    private static void RunPuzzle2()
+    {
+      var scan = LoadState("input.txt");
+      var automaton = new RecursiveEris(scan);
+      Console.WriteLine("PUZZLE 2");
+      Console.WriteLine("========");
+      automaton.Advance(200);
+      Console.WriteLine("Total number of bugs: " + automaton.CountBugsRecursive());
     }
 
     private static void RunExamples1()
