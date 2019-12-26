@@ -9,9 +9,11 @@ namespace AOC2019
   {
     public static void Main()
     {
-      RunExamples();
+      RunExamples1();
       Console.WriteLine();
       RunPuzzle1();
+      Console.WriteLine();
+      RunExamples2();
     }
 
     private static void RunPuzzle1()
@@ -27,7 +29,7 @@ namespace AOC2019
       Console.WriteLine("Biodiversity rating: " + automaton.GetBiodiversityRating());
     }
 
-    private static void RunExamples()
+    private static void RunExamples1()
     {
       var scan = LoadState("example1.txt");
       var automaton = new Eris(scan);
@@ -51,6 +53,40 @@ namespace AOC2019
       PrintScan(automaton);
       Console.WriteLine();
       Console.WriteLine("Biodiversity rating: " + automaton.GetBiodiversityRating());
+    }
+
+    private static void RunExamples2()
+    {
+      var scan = LoadState("example1.txt");
+      var automaton = new RecursiveEris(scan);
+      automaton.Advance(10);
+      Console.WriteLine("EXAMPLE 2");
+      Console.WriteLine("=========");
+      Console.WriteLine("Depth 0:");
+      PrintScan(automaton);
+      Console.WriteLine();
+
+      int counter = 0;
+      var parent = automaton.ParentLevel;
+      while (parent != null)
+      {
+        counter--;
+        Console.WriteLine("Depth " + counter + ":");
+        PrintScan(parent);
+        Console.WriteLine();
+        parent = parent.ParentLevel;
+      }
+      counter = 0;
+      var child = automaton.ChildLevel;
+      while (child != null)
+      {
+        counter++;
+        Console.WriteLine("Depth " + counter + ":");
+        PrintScan(child);
+        Console.WriteLine();
+        child = child.ChildLevel;
+      }
+      Console.WriteLine("Total number of bugs: " + automaton.CountBugsRecursive());
     }
 
     private static IList<string> LoadState(string filename)
