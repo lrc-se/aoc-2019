@@ -55,6 +55,34 @@ function puzzle1() {
   console.log("Sum of alignment parameters: " + alignmentSum);
 }
 
+function puzzle2() {
+  console.log("PUZZLE 2");
+  console.log("========");
+  const runner = asciiIntcode.createRunner(input);
+  runner.memory[0] = 2;
+
+  const instructions = [
+    "A,B,A,B,C,B,A,C,B,C",
+    "L,12,L,8,R,10,R,10",
+    "L,6,L,4,L,12",
+    "R,10,L,8,L,4,R,10",
+    "n"
+  ];
+  runner.on("instructionwaiting", () => {
+    if(instructions.length) {
+      runner.inputInstruction(instructions.shift());
+    }
+  });
+  runner.on("output", value => {
+    if(value > 255) {
+      console.log("Amount of collected dust: " + value);
+    }
+  });
+  runner.run();
+}
+
 
 const input = fs.readFileSync("input.txt", "utf8").split(",").map(line => parseInt(line, 10));
 puzzle1();
+console.log("");
+puzzle2();
