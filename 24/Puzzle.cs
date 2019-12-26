@@ -10,6 +10,21 @@ namespace AOC2019
     public static void Main()
     {
       RunExamples();
+      Console.WriteLine();
+      RunPuzzle1();
+    }
+
+    private static void RunPuzzle1()
+    {
+      var scan = LoadState("input.txt");
+      var automaton = new Eris(scan);
+      Console.WriteLine("PUZZLE 1");
+      Console.WriteLine("========");
+      FindFirstRepeatedLayout(automaton);
+      Console.WriteLine("First repeated layout:");
+      PrintScan(automaton);
+      Console.WriteLine();
+      Console.WriteLine("Biodiversity rating: " + automaton.GetBiodiversityRating());
     }
 
     private static void RunExamples()
