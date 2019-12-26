@@ -118,6 +118,14 @@ To play, use the arrow keys to advance one frame: `left` to move left, `right` t
 In addition, `enter` toggles auto mode and `esc` resets the game. And yes, that's an actual paddle.
 
 
+Day 16 (part 1)
+---------------
+
+__PHP (7.3)__
+
+Arrays again. Mmm, arrays.
+
+
 Day 19
 ------
 
