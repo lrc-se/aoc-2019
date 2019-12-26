@@ -11,6 +11,8 @@ namespace AOC2019
     int Width { get; }
     int Height { get; }
     char[,] Cells { get; }
+    string GetTileString();
+    void Advance(int steps = 1);
   }
 
   public class Eris : IAutomaton
@@ -31,6 +33,19 @@ namespace AOC2019
           Cells[y, x] = (cells != null ? cells.ElementAt(y).ElementAt(x) : '.');
         }
       }
+    }
+
+    public string GetTileString()
+    {
+      var builder = new StringBuilder();
+      for (int y = 0; y < Height; y++)
+      {
+        for (int x = 0; x < Width; x++)
+        {
+          builder.Append(Cells[y, x]);
+        }
+      }
+      return builder.ToString();
     }
 
     public void Advance(int steps = 1)
@@ -63,6 +78,24 @@ namespace AOC2019
           }
         }
       }
+    }
+
+    public int GetBiodiversityRating()
+    {
+      int rating = 0;
+      int exponent = 0;
+      for (int y = 0; y < Height; y++)
+      {
+        for (int x = 0; x < Width; x++)
+        {
+          if (Cells[y, x] == '#')
+          {
+            rating += (int)Math.Pow(2, exponent);
+          }
+          exponent++;
+        }
+      }
+      return rating;
     }
 
 

@@ -29,6 +29,13 @@ namespace AOC2019
         PrintScan(automaton);
         Console.WriteLine();
       }
+
+      automaton = new Eris(scan);
+      FindFirstRepeatedLayout(automaton);
+      Console.WriteLine("First repeated layout:");
+      PrintScan(automaton);
+      Console.WriteLine();
+      Console.WriteLine("Biodiversity rating: " + automaton.GetBiodiversityRating());
     }
 
     private static IList<string> LoadState(string filename)
@@ -45,6 +52,21 @@ namespace AOC2019
           Console.Write(automaton.Cells[y, x]);
         }
         Console.WriteLine();
+      }
+    }
+
+    private static void FindFirstRepeatedLayout(IAutomaton automaton)
+    {
+      var prevTiles = new HashSet<string>();
+      while (true)
+      {
+        string tiles = automaton.GetTileString();
+        if (prevTiles.Contains(tiles))
+        {
+          return;
+        }
+        prevTiles.Add(tiles);
+        automaton.Advance();
       }
     }
   }
