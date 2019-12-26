@@ -124,3 +124,11 @@ Day 19
 __Java (JDK 13)__
 
 Straight copy of the intcode runner from the previous Java implementation (day 9). Quick math-based solutions, without bells or whistles.
+
+
+Day 22 (part 1)
+-----------------
+
+__Python (3.8)__
+
+Sequence handling is easy in Python. At least when they're not ginormous...
