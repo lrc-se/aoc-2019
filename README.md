@@ -126,6 +126,14 @@ __PHP (7.3)__
 Arrays again. Mmm, arrays.
 
 
+Day 17
+------
+
+__JavaScript (Node 11.6)__
+
+Using the ASCII intcode runner from day 21. Movement instructions for the second part were arrived at manually (which wasn't very difficult).
+
+
 Day 19
 ------
 
