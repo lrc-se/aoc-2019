@@ -23,8 +23,15 @@ class FFT {
         }
 
         $output_value = 0;
-        foreach($input as $input_value) {
-          $output_value += $input_value * $this->pattern[$pattern_index];
+        for($j = 0; $j < $input_size; $j++) {
+          if($this->pattern[$pattern_index] === 0) {
+            $j += $input_index - $pattern_counter - 1;
+            $pattern_counter = 0;
+            $pattern_index++;
+            continue;
+          }
+
+          $output_value += $input[$j] * $this->pattern[$pattern_index];
 
           $pattern_counter++;
           if($pattern_counter == $input_index) {
