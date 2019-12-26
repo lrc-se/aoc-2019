@@ -62,6 +62,15 @@ const Network = {
 
   sendData(address, data) {
     computers[address].packetQueue.push(data);
+  },
+
+  isIdle() {
+    for(let computer of computers) {
+      if(computer.packetQueue.length) {
+        return false;
+      }
+    }
+    return true;
   }
 };
 
