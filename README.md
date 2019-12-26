@@ -164,3 +164,11 @@ Day 23
 __JavaScript (Node 11.6)__
 
 Using the previous intcode runner, sans ASCII extension but with more Node events.
+
+
+Day 24
+------
+
+__C# (.NET 4.7)__
+
+Nothing of particular note in part one, but part two took some thinking to limit recursion levels and handle all tile updates in proper sequence.
