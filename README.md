@@ -9,7 +9,7 @@ We'll see how it goes.
 Day 1
 -----
 
-__JavaScript (Node)__
+__JavaScript (Node 11.6)__
 
 Quick-and-dirty dependency-less stuff, with equally quick-and-dirty tests (of sorts).
 
@@ -109,7 +109,7 @@ First full return show of the series. Still big on types, but with a string-base
 Day 13
 ------
 
-__JavaScript (Vue)__
+__JavaScript (Vue 2.6)__
 
 Using the previous version of the intcode runner as-is, but with Vue handling the frontend this time.
 There's no build step so we're still not going beyond ES5, but with a Promise polyfill.
@@ -132,6 +132,14 @@ Day 19
 __Java (JDK 13)__
 
 Straight copy of the intcode runner from the previous Java implementation (day 9). Quick math-based solutions, without bells or whistles.
+
+
+Day 21 (part 1)
+---------------
+
+__JavaScript (Node 11.6)__
+
+Back in ES6+ territory with an updated version of the JS intcode runner (day 11+13), utilizing Node's event system.
 
 
 Day 22 (part 1)
