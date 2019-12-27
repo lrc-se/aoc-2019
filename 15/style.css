@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+  padding: 2em;
+  font-family: sans-serif;
+  text-align: center;
+  overflow-y: scroll;
+}
+
+h1 {
+  margin: 0 0 1em;
+}
+
+[v-cloak] {
+  display: none;
+}
+
+.aoc-area {
+  border: 1px solid rgba(0, 0, 0, .15);
+  display: inline-block;
+}
+
+.aoc-area-row {
+  display: flex;
+}
+
+.aoc-area-tile {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  box-shadow: 0 0 1px rgba(0, 0, 0, .15) inset;
+  flex-shrink: 0;
+}
+
+.aoc-area-droid {
+  width: 100%;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aoc-area-tile-0 {
+  background-color: #888;
+}
+
+.aoc-area-tile-1 {
+  background-color: #eee;
+}
+
+.aoc-area-tile-2 {
+  background-color: #eef;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 255, .75) inset;
+}
