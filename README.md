@@ -118,6 +118,25 @@ To play, use the arrow keys to advance one frame: `left` to move left, `right` t
 In addition, `enter` toggles auto mode and `esc` resets the game. And yes, that's an actual paddle.
 
 
+Day 15
+------
+
+__JavaScript (Vue 2.6)__
+
+Similar to day 13, but with an updated version of the ES5 intcode runner (and less polished visuals). The following key commands are available:
+
+- `up`: move north
+- `down`: move south
+- `left`: move west
+- `right`: move east
+- `m`: export current map as JSON
+- `l`: load map from JSON file
+- `space`: start oxygen fill process
+- `esc`: reset to initial conditions
+
+Finding the oxygen system and producing a complete map is left as an exercise to the reader.
+
+
 Day 16 (part 1)
 ---------------
 
