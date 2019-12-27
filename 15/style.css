@@ -10,6 +10,10 @@ h1 {
   margin: 0 0 1em;
 }
 
+h2 {
+  margin: 0 0 .5em;
+}
+
 [v-cloak] {
   display: none;
 }
@@ -31,8 +35,8 @@ h1 {
 }
 
 .aoc-area-tile {
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   display: flex;
   box-shadow: 0 0 1px rgba(0, 0, 0, .15) inset;
   flex-shrink: 0;
@@ -51,10 +55,38 @@ h1 {
 }
 
 .aoc-area-tile-1 {
-  background-color: #eee;
+  background-color: #ddd;
 }
 
 .aoc-area-tile-2 {
-  background-color: #eef;
+  background-color: #ddf;
   box-shadow: 0 0 3px 1px rgba(0, 0, 255, .75) inset;
+}
+
+.aoc-area-export {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 2em;
+  background-color: rgba(255, 255, 255, .9);
+  display: flex;
+  overflow-y: auto;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.aoc-area-export > h2 {
+  flex-basis: 100%;
+}
+
+.aoc-area-export textarea {
+  width: 1024px;
+  max-width: 100%;
+  max-height: 100%;
+  font-size: .75em;
+  flex-grow: 0;
 }

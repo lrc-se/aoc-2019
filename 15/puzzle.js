@@ -7,10 +7,11 @@ var Puzzle = (function() {
     WEST: 3,
     EAST: 4
   };
-  var StatusCode = {
+  var TileType = {
     WALL: 0,
-    MOVED: 1,
-    FOUND: 2
+    OPEN: 1,
+    OXYGEN_SYSTEM: 2,
+    UNKNOWN: 10,
   };
   var deltas = {
     1: { x: 0, y: -1 },
@@ -58,10 +59,21 @@ var Puzzle = (function() {
           program: null,
           display: [],
           pos: {},
-          oxygenPos: {},
+          oxygenPos: null,
           direction: null,
-          steps: []
+          steps: [],
+          showExport: false
         };
+      },
+
+      computed: {
+        numSteps: function() {
+          return Math.max(this.steps.length - 1, 0);
+        },
+
+        mapExport: function() {
+          return JSON.stringify(this.display);
+        }
       },
 
       methods: {
@@ -70,7 +82,7 @@ var Puzzle = (function() {
           for(var y = 0; y < this.height; ++y) {
             var row = [];
             for(var x = 0; x < this.width; ++x) {
-              row.push(100);
+              row.push(TileType.UNKNOWN);
             }
             this.display.push(row);
           }
@@ -78,7 +90,8 @@ var Puzzle = (function() {
             x: Math.floor(this.width / 2),
             y: Math.floor(this.height / 2)
           };
-          this.display[this.pos.y][this.pos.x] = StatusCode.MOVED;
+          this.display[this.pos.y][this.pos.x] = TileType.OPEN;
+          this.oxygenPos = null;
           this.steps = [this.pos.x + "," + this.pos.y];
         },
 
@@ -90,33 +103,72 @@ var Puzzle = (function() {
         },
 
         handleKey: function(e) {
+          var vm = this;
           var key = e.key || e.keyCode || e.which;
           switch(key) {
             case "ArrowUp":
             case "Up":
             case 38:
-              this.direction = MovementCommand.NORTH;
+              vm.move(MovementCommand.NORTH);
               break;
+
             case "ArrowDown":
             case "Down":
             case 40:
-              this.direction = MovementCommand.SOUTH;
+              vm.move(MovementCommand.SOUTH);
               break;
+
             case "ArrowLeft":
             case "Left":
             case 37:
-              this.direction = MovementCommand.WEST;
+              vm.move(MovementCommand.WEST);
               break;
+
             case "ArrowRight":
             case "Right":
             case 39:
-              this.direction = MovementCommand.EAST;
+              vm.move(MovementCommand.EAST);
               break;
+
+            case "m":
+            case "M":
+              vm.showExport = !vm.showExport;
+              break;
+
+            case "l":
+            case "L":
+              var name = prompt("Map file (.json):");
+              if(name) {
+                vm.oxygenPos = null;
+                getJSON(name).then(function(map) {
+                  for(var y = 0; y < map.length; ++y) {
+                    vm.$set(vm.display, y, map[y]);
+                    if(!vm.oxygenPos) {
+                      var oxygenX = map[y].indexOf(TileType.OXYGEN_SYSTEM);
+                      if(~oxygenX) {
+                        vm.oxygenPos = {
+                          x: oxygenX,
+                          y: y
+                        };
+                      }
+                    }
+                  }
+                }).catch(function() {
+                  alert("Unable to load map file '" + name + ".json'");
+                });
+              }
+              break;
+
             default:
               return;
           }
+
           e.preventDefault();
-          computer.enqueueInput(this.direction);
+        },
+
+        move: function(direction) {
+          this.direction = direction;
+          computer.enqueueInput(direction);
         },
 
         handleOutput: function(value) {
@@ -124,11 +176,13 @@ var Puzzle = (function() {
             x: this.pos.x + deltas[this.direction].x,
             y: this.pos.y + deltas[this.direction].y
           };
-          this.$set(this.display[newPos.y], newPos.x, value);
+          if(this.display[newPos.y][newPos.x] === TileType.UNKNOWN) {
+            this.$set(this.display[newPos.y], newPos.x, value);
+          }
 
-          if(value === StatusCode.WALL) {
+          if(value === TileType.WALL) {
             return;
-          } else if(value === StatusCode.FOUND) {
+          } else if(value === TileType.OXYGEN_SYSTEM) {
             this.oxygenPos = {
               x: newPos.x,
               y: newPos.y
