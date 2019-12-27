@@ -14,9 +14,12 @@
   <div id="aoc-droid-app" v-cloak>
     <aoc-area inline-template>
       <div class="aoc-area">
-        <div v-for="(row, y) in display" class="aoc-area-row">
-          <div v-for="(tile, x) in row" class="aoc-area-tile" :class="'aoc-area-tile-' + tile">
-            <span v-if="isDroidPos(x, y)" class="aoc-area-droid">D</span>
+        <div class="aoc-area-steps">Steps from start: <strong>{{ steps.length - 1 }}</strong></div>
+        <div class="aoc-area-display">
+          <div v-for="(row, y) in display" class="aoc-area-row">
+            <div v-for="(tile, x) in row" class="aoc-area-tile" :class="'aoc-area-tile-' + tile">
+              <span v-if="isDroidPos(x, y)" class="aoc-area-droid">D</span>
+            </div>
           </div>
         </div>
       </div>

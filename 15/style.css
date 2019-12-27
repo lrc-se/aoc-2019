@@ -15,8 +15,15 @@ h1 {
 }
 
 .aoc-area {
-  border: 1px solid rgba(0, 0, 0, .15);
   display: inline-block;
+}
+
+.aoc-area-steps {
+  margin-bottom: 1em;
+}
+
+.aoc-area-display {
+  border: 1px solid rgba(0, 0, 0, .15);
 }
 
 .aoc-area-row {

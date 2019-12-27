@@ -59,7 +59,8 @@ var Puzzle = (function() {
           display: [],
           pos: {},
           oxygenPos: {},
-          direction: null
+          direction: null,
+          steps: []
         };
       },
 
@@ -78,6 +79,7 @@ var Puzzle = (function() {
             y: Math.floor(this.height / 2)
           };
           this.display[this.pos.y][this.pos.x] = StatusCode.MOVED;
+          this.steps = [this.pos.x + "," + this.pos.y];
         },
 
         start: function() {
@@ -134,6 +136,12 @@ var Puzzle = (function() {
           }
 
           this.pos = newPos;
+          var coords = newPos.x + "," + newPos.y;
+          if(!~this.steps.indexOf(coords)) {
+            this.steps.push(coords);
+          } else {
+            this.steps.pop();
+          }
         },
 
         isDroidPos: function(x, y) {
