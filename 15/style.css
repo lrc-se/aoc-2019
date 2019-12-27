@@ -22,7 +22,7 @@ h2 {
   display: inline-block;
 }
 
-.aoc-area-steps {
+.aoc-area-counter {
   margin-bottom: 1em;
 }
 
@@ -61,6 +61,10 @@ h2 {
 .aoc-area-tile-2 {
   background-color: #ddf;
   box-shadow: 0 0 3px 1px rgba(0, 0, 255, .75) inset;
+}
+
+.aoc-area-tile-3 {
+  background-color: #ddf;
 }
 
 .aoc-area-export {

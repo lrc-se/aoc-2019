@@ -11,6 +11,7 @@ var Puzzle = (function() {
     WALL: 0,
     OPEN: 1,
     OXYGEN_SYSTEM: 2,
+    OXYGEN: 3,
     UNKNOWN: 10,
   };
   var deltas = {
@@ -62,7 +63,8 @@ var Puzzle = (function() {
           oxygenPos: null,
           direction: null,
           steps: [],
-          showExport: false
+          showExport: false,
+          oxygenProgress: 0
         };
       },
 
@@ -93,6 +95,7 @@ var Puzzle = (function() {
           this.display[this.pos.y][this.pos.x] = TileType.OPEN;
           this.oxygenPos = null;
           this.steps = [this.pos.x + "," + this.pos.y];
+          this.oxygenProgress = 0;
         },
 
         start: function() {
@@ -159,6 +162,17 @@ var Puzzle = (function() {
               }
               break;
 
+            case "Space":
+            case " ":
+            case 32:
+              if(!vm.oxygenPos) {
+                alert("Oxygen system not found!");
+              } else if(vm.oxygenProgress) {
+                alert("Oxygen fill already started!");
+              }
+              vm.fillOxygen();
+              break;
+
             default:
               return;
           }
@@ -200,6 +214,37 @@ var Puzzle = (function() {
 
         isDroidPos: function(x, y) {
           return (this.pos.x == x && this.pos.y == y);
+        },
+
+        fillOxygen: function() {
+          var vm = this;
+          var oxygenPositions = [];
+          for(var y = 0; y < vm.height; ++y) {
+            for(var x = 0; x < vm.width; ++x) {
+              if(vm.display[y][x] === TileType.OPEN && vm.hasAdjacentOxygen(x, y)) {
+                oxygenPositions.push({
+                  x: x,
+                  y: y
+                });
+              }
+            }
+          }
+          if(oxygenPositions.length) {
+            vm.oxygenProgress++;
+            oxygenPositions.forEach(function(position) {
+              vm.$set(vm.display[position.y], position.x, TileType.OXYGEN);
+            });
+            setTimeout(vm.fillOxygen, 30);
+          }
+        },
+
+        hasAdjacentOxygen: function(x, y) {
+          return (
+            (y > 0 && (this.display[y - 1][x] === TileType.OXYGEN_SYSTEM || this.display[y - 1][x] === TileType.OXYGEN))
+            || (y < this.height - 1 && (this.display[y + 1][x] === TileType.OXYGEN_SYSTEM || this.display[y + 1][x] === TileType.OXYGEN))
+            || (x > 0 && (this.display[y][x - 1] === TileType.OXYGEN_SYSTEM || this.display[y][x - 1] === TileType.OXYGEN))
+            || (x < this.width - 1 && (this.display[y][x + 1] === TileType.OXYGEN_SYSTEM || this.display[y][x + 1] === TileType.OXYGEN))
+          );
         }
       },
 

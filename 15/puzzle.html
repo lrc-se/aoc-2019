@@ -14,7 +14,8 @@
   <div id="aoc-droid-app" v-cloak>
     <aoc-area inline-template>
       <div class="aoc-area">
-        <div class="aoc-area-steps">Steps from start: <strong>{{ numSteps }}</strong></div>
+        <div class="aoc-area-counter">Steps from start: <strong>{{ numSteps }}</strong></div>
+        <div class="aoc-area-counter">Oxygen fill progress: <strong>{{ (oxygenProgress == 1 ? "1 minute" : oxygenProgress + " minutes") }}</strong></div>
         <div class="aoc-area-display">
           <div v-for="(row, y) in display" class="aoc-area-row">
             <div v-for="(tile, x) in row" class="aoc-area-tile" :class="'aoc-area-tile-' + tile">
