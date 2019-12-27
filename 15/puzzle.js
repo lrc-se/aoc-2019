@@ -96,10 +96,7 @@ var Puzzle = (function() {
           this.oxygenPos = null;
           this.steps = [this.pos.x + "," + this.pos.y];
           this.oxygenProgress = 0;
-        },
 
-        start: function() {
-          this.reset();
           computer = Intcode.createRunner(this.program);
           computer.onoutput = this.handleOutput;
           computer.run();
@@ -142,8 +139,8 @@ var Puzzle = (function() {
             case "L":
               var name = prompt("Map file (.json):");
               if(name) {
-                vm.oxygenPos = null;
                 getJSON(name).then(function(map) {
+                  vm.reset();
                   for(var y = 0; y < map.length; ++y) {
                     vm.$set(vm.display, y, map[y]);
                     if(!vm.oxygenPos) {
@@ -171,6 +168,12 @@ var Puzzle = (function() {
                 alert("Oxygen fill already started!");
               }
               vm.fillOxygen();
+              break;
+
+            case "Escape":
+            case "Esc":
+            case 27:
+              vm.reset();
               break;
 
             default:
@@ -253,7 +256,7 @@ var Puzzle = (function() {
         getJSON("input").then(function(program) {
           vm.program = program;
           document.addEventListener("keydown", vm.handleKey);
-          vm.start();
+          vm.reset();
         });
       }
     };
